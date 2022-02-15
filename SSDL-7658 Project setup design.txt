@@ -1,0 +1,57 @@
+-- Design for Multi Main table in Project setup --
+
+** UI **
+1. Main screen in Project set up 
+	a. Grid to display Main tables created and Action buttons (Add,edit and download).
+	b. Plugin which allows user to add or edit Main tables.
+2. Functionalities 
+	a. All API calls which include GET,SAVE,DOWNLOAD.
+	b. Sorting, Filtering on the grid.
+	c. Default grouping of unselected at top and then selected ones. 
+	d. Pagination.
+3. Validations
+	a. Validation of Main table name.
+	b. Validation of unable to de-select specific GEP columns.
+	c. Show some columns as selected default but allow de-selection.
+	d. Validation to prevent de-selecting saved columns.
+4. Challenges:
+	a. Main table edit screen - Select all 
+	   - Can "Select all" be used to select all columns across all page numbers?
+
+** Backend **
+*SQL*
+1. New SQL table called MainTableColumnMaster to store 486 columns as mentioned in the file against the story id SSDL-7658.
+2. SP for getting all main tables.
+3. SP for getting columns from MainTableColumnMaster table and columns of a saved main table.
+	a. Support pagination
+	b. params: tableName string, onlyShowSelectedColumns boolean.
+5. SP for saving a main table.
+
+*.NET*
+1. API to get all columns from MainTableColumnMaster table.
+	a) API should support pagination.
+2. API to get columns of a saved main table by tableName.
+3. API to save columns.
+4. API to get all Main Tables saved.
+
+Suggestion:
+Either we can call two APIS to get master main table columns and saved main table columns and then UI will merge them for display.
+								OR
+We can merge two APIs so that UI can only display the columns as it is
+and keep the UI logic simple.
+
+Questions:
+1. Should we save the GEP - Admin - Data Lake, GEP - Admin - ID, GEP - System 
+	as Selected while saving new maintable. - Should be selected but excluded on the UI based on Category type and should be available on Project configuration.
+2. If we store GEP - Admin - Data Lake, GEP - Admin - ID, GEP - System columns 
+   as Selected  {need to connect with PMG}
+   then are we suppose to show them on  
+   a. Consolidation till Publish. - No
+   b. Import Utility - No 
+   c. Export Utility - NO
+3. If these columns are not Selected but saved then are we suppose to send 
+   GEP - Admin - Data Lake, GEP - Admin - ID, GEP - System columns in Project Configuration Json  - yes
+   
+  
+
+   
