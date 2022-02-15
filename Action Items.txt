@@ -1,0 +1,10 @@
+Action Items
+
+1. Project setup table and edit screen UI - Gopinadh
+2. Basic Details UI (Loader)- Vishal 
+4. Table creation with get sp and API - AKshay & Gopinadh
+	A. Api integration for project setup table,save api- Gopinadh
+	B. Basic Details  API Integration - Akshay
+		a. Consolidation API chagnes- AKshay
+		b. Profile+ API changes - Vishal 
+
