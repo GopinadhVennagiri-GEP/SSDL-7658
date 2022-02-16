@@ -28,17 +28,10 @@
 5. SP for saving a main table.
 
 *.NET*
-1. API to get all columns from MainTableColumnMaster table.
+1. API to get columns of a saved main table along with all master columns from MainTableColumnsMaster table.
 	a) API should support pagination.
-2. API to get columns of a saved main table by tableName.
-3. API to save columns.
-4. API to get all Main Tables saved.
-
-Suggestion:
-Either we can call two APIS to get master main table columns and saved main table columns and then UI will merge them for display.
-								OR
-We can merge two APIs so that UI can only display the columns as it is
-and keep the UI logic simple.
+2. API to save columns.
+3. API to get all Main Tables saved.
 
 Questions:
 1. Should we save the GEP - Admin - Data Lake, GEP - Admin - ID, GEP - System 

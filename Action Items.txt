@@ -1,10 +1,26 @@
 Action Items
 
 1. Project setup table and edit screen UI - Gopinadh
-2. Basic Details UI (Loader)- Vishal 
+2. Basic Details UI (Loader)- Vishal
 4. Table creation with get sp and API - AKshay & Gopinadh
 	A. Api integration for project setup table,save api- Gopinadh
-	B. Basic Details  API Integration - Akshay
+	B. Basic Details API Integration - Akshay
 		a. Consolidation API chagnes- AKshay
-		b. Profile+ API changes - Vishal 
-
+		b. Profile+ API changes - Vishal
+5. backend - Message processing for schema change - eventId 101
+	A. Message processing - Consolidation - 3 days - Akshay
+	B. Message processing - Profile to publish - 4 days - Vishal S.
+	C. showing message on UI on GetSteps only from Consolidation to publish
+		a. UI change - 2 days - Akshay
+		b. GetSteps - API change - consolidation - 2 day - Akshay
+		c. GetSteps - API change - profle to publish - 2 day - Vishal S.
+6. .NET side maintenance
+	- remove all unused columns from all domains
+	- include the new master table for main table columns in domain setup
+7. Test case preparation
+8. API automation
+	- Distribute APIs among members
+9. Workflow changes
+10. Custom column changes
+	a. UI changes for showing suggestions in a table with display name and data type with loader
+	b. SP/API changes for storing new columns instead of using reserved ones.
