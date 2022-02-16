@@ -1,0 +1,122 @@
+multi main table story technical changes
+
+UI:
+Behaviors:
+1. New screen in project setup - 1 day
+	a) one plugin for add/edit
+	b) one plugin for displaying main tables
+2. Functionalities
+	a) Call for all APIs
+	b) sorting on grid
+	c) default grouping of unselected at top and then selected ones.
+	d) filtering on grid
+	e) pagination on grid
+	f) validation of main table name
+	g) validation of unable to de-select specific GEP columns
+	h) show some columns as selected default but allow de-selection.
+	i) validation to prevent de-selecting saved columns.
+3. Identify all APIs that is getting columns only from OPS_MAIN and change it to get columns of the main table selected on UI or the main table stored against this job in SPEND_DL_JOB_DETAILS table.
+4. UI - plugins dedicated API calls rather than shared list of main table columns.
+
+Challenges:
+1. Main table edit screen - Select all
+- Can "Select all" be used to select all columns across all page numbers?
+2. showing loader all over the screen while main table columns are being fetched.
+
+Validations:
+1. Keep the dropdown enabled for the main table but check if there is any setting saved from consolidation to publish and the main table is different then throw validation.
+2. Custom column length between 1 - 255.
+
+
+Backend:
+SQL
+1. new SQL table called MainTableColumnMaster to store 486 columns as mentioned in the file on the JIRA
+2. SP for getting all main tables
+3. SP for getting columns from MainTableColumnMaster table and columns of a saved main table.
+	a) This SP should not fetch specific GEP columns mentioned in story.
+	b) The SP should save specific GEP columns as selected default.
+	c) Support pagination
+	e) params: tableName string, onlyShowSelectedColumns boolean
+5. SP for saving a main table.
+6. Identify and replace all hard-coded OPS_MAin references with the main table stored in SPEND_DL_JOB_DETAILS table.
+
+create table MainTableColumnMaster
+(
+	Id PK Identity,
+	ColumnName,
+	DisplayColumnName,
+	FieldCategory,
+	DataTypeId,
+	Length,
+	CreatedBy,
+	CreatedOn,
+	ModifiedBy,
+	ModifiedOn,
+	IsInputField,
+	ColumnScopeEnum varchar() - Null OR ImportExportOnly
+	FieldDefinition,
+	IsBasicColumns
+)
+
+alter table SSDL.SPEND_SSDL_TableSchema
+ColumnScopeEnum varchar() - Null OR ImportExportOnly
+
+class MainTableColumn
+{
+	ColumnName
+	DisplayColumnName
+	*IsSelected - based on all columns with GEP prefix 
+	*IsSaved
+	FieldCategory
+	DataTypeName
+	*IsMandatory - based on field category "GEP - Admin - Data Lake", "GEP - Admin - ID", "GEP - System"
+	*IsBasicColumns
+}
+
+.NET
+1. API to get all main tables - (In Import/Export).
+2. API to get all columns from MainTableColumnMaster table.
+	a) API should support pagination.
+3. API to get columns of a saved main table by ID - already available.
+4. API to save columns.
+5. Identify and replace all hard-coded OPS_MAin references with the main table stored in SPEND_DL_JOB_DETAILS table.
+6. validations:
+	a) Can user change to another main table after saving the job ?
+	b) If user saved a job with one main table and then changes the main table to another one then validation should alert that there are some configuration stored against old {main table name} which will result in error while running the job, if you save with new {main table name}.
+	c) Throw error message if main table already exists.
+7. Changes to Project configuration
+8. changes to activity configuration
+9. Profile -> GetAllMainTableColumns() - Make it parameterized so that table name or Id can be passed to it.
+
+
+Suggestion:
+Either we can call two APIS to get master main table columns and saved main table columns and then UI will merge them for display.
+OR
+We can merge two APIs so that UI can only display the columns as it is
+and keep the UI logic simple.
+
+Testing:
+1. one time and recurring job
+2. ensure that each popup is getting column of the main table which is selected in the dropdown in Basic Details.
+
+Impacted areas for testing:
+1. Domain setup script would have the master main table columns from JIRA.
+2. workflow jobs configuration screens and job run
+3. old jobs should work as it is
+4. 
+
+Questions:
+1. With this story, can we exclude OPS_MAIN from new domain setups?
+Yes
+2. All places from consolidation to publish, import/export should not show GEP marked columns as per story?
+3. Should we show master tables as with their reference to original main tables in import/export?
+4. How is project configuration JSON being sent currently?
+
+
+Activity:
+5. One point in comment says "In ADB side, all non-active columns will be deleted."
+We talked about removing un-used custom columns but what about un-used non-custom columns?
+Are we keeping or removing them from .NET side?
+
+Impact analysis:
+Impact on MBN step for sync feature.
