@@ -36,3 +36,15 @@ Impact:
 9. Correlation of worklfow and rules
 10. Backward compatibility - old jobs/rules should work as it is.
 11. RWB dependency in VNE and/or Classify
+
+class MainTableColumn
+{
+	ColumnName
+	DisplayColumnName
+	*IsSelected - based on all columns with GEP prefix
+	*IsSaved
+	FieldCategory
+	DataTypeName
+	*IsMandatory - based on field category "GEP - Admin - Data Lake", "GEP - Admin - ID", "GEP - System"
+	*IsBasicColumns
+}
