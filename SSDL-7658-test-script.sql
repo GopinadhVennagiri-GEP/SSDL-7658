@@ -558,4 +558,9 @@ BEGIN
     INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
     VALUES(@TableId, 'GEP_YEAR', 'GEP Calendar Year', 'GEP - Period', @intDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 0);
 END
+IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TableSchema WHERE TableID = @TableId AND ColumnName = 'GEP_RULE_ID')
+BEGIN
+    INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
+    VALUES(@TableId, 'GEP_RULE_ID', 'GEP Rule ID (Classification)', 'GEP - Admin - Maintenance', @intDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 0);
+END
 GO
