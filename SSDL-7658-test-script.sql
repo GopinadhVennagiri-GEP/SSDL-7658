@@ -531,3 +531,31 @@ INSERT INTO SSDL.MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCatego
 ,('GEP_AI_DL_CATEGORY_L7','GEP AI DL Category L7','GEP - Admin - Data Lake',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_NORM_SPEND_AED','GEP Normalized Spend (AED)','GEP - Amount',@FloatDataTypeID,'0',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_NORM_SPEND_INR','GEP Normalized Spend (INR)','GEP - Amount',@FloatDataTypeID,'0',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE());
+GO
+
+DECLARE @MainTableTypeId INT;
+SELECT @MainTableTypeId = Table_Typ_Id FROM SSDL.SPEND_DCC_TABLE_TYP_MST WHERE TABLE_TYP_CODE = '101'
+
+IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'Main2')
+BEGIN
+    insert into SSDL.SPEND_SSDL_TABLE(TableTypeID, TableName, IsActive, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate)
+    values(@MainTableTypeId, 'Main2', 1, 1, GETDATE(), 1, GETDATE())
+END
+
+DECLARE @TableId INT;
+SELECT @TableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableName = 'Main2' AND TableTypeId = @MainTableTypeId
+
+DECLARE @intDataTypeID INT = 0;
+SELECT @intDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Int';
+
+IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TableSchema WHERE TableID = @TableId AND ColumnName = 'Custom_Col_A')
+BEGIN
+    INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
+    VALUES (@TableId, 'Custom_Col_A', 'Custom Col A', 'ERP - Custom Fields', @intDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 0);
+END
+IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TableSchema WHERE TableID = @TableId AND ColumnName = 'GEP_YEAR')
+BEGIN
+    INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
+    VALUES(@TableId, 'GEP_YEAR', 'GEP Calendar Year', 'GEP - Period', @intDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 0);
+END
+GO
