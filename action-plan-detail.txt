@@ -13,4 +13,5 @@ Impact on Angular
 a) If you're using any dependency injection then don't worry about it.
 Just ensure that spend-api is also getting deployed with your plugin.
 
-b) 
+b) Use the isMultiTableEnabled() in your HTML as well.
+Use ng-container and ng-template with "*ngIf then else"
