@@ -8,3 +8,9 @@ Including HTML and Angular
 
 3. Don't touch existing code, if required, take a copy of existing code and wrap it in a function
 and then call this old function if isMultiTableEnabled() returns false, or new code if it's true.
+
+Impact on Angular
+a) If you're using any dependency injection then don't worry about it.
+Just ensure that spend-api is also getting deployed with your plugin.
+
+b) 
