@@ -58,7 +58,8 @@ BEGIN
 			A.DataTypeID,
 			C.DATA_TYP_NAME AS DataTypeName,
 			A.ColumnVisibilityScopeEnumCode,
-			A.IsSelectionMandatory
+			A.IsSelectionMandatory,
+            A.IsBasicColumn
 		FROM SSDL.MainTableColumnsMaster A
 		INNER JOIN SSDL.SPEND_DCC_TABLE_DATA_TYP_MST C ON C.DATA_TYP_ID = A.DataTypeID
 		ORDER BY A.ColumnName
@@ -104,7 +105,7 @@ BEGIN
 			CAST((CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 0 ELSE C.IsBasicColumn END) AS BIT) AS IsBasicColumn
 		FROM MainTableAndMasterTableColumnsCombined A
 		LEFT JOIN SSDL.SPEND_SSDL_TableSchema B ON A.ColumnName = B.ColumnName AND B.TableID = @MainTableId
-		LEFT JOIN SSDL.MainTableColumnsMaster C ON A.ColumnName = C.ColumnName
+		LEFT JOIN SSDL.MainTableColumnsMaster C ON A.ColumnName IS NOT NULL AND A.ColumnName = C.ColumnName
 		LEFT JOIN SSDL.MainTableColumnsMaster D ON B.ColumnName IS NOT NULL AND B.ColumnName = D.ColumnName
 		WHERE
 		(
