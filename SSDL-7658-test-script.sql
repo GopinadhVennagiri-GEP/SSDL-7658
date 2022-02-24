@@ -22,6 +22,109 @@ CREATE TABLE SSDL.MainTableColumnsMaster
 	LastUpdatedBy bigint NOT NULL,
 	LastUpdatedDate datetime NOT NULL
 )
+GO
+
+CREATE OR ALTER PROCEDURE SSDL.MainTableColumns_GetByParams
+(
+	@TableName VARCHAR(255) = NULL,
+	@AccessLevel VARCHAR(50) = 'ForUI'
+)
+AS
+BEGIN
+	DECLARE @MainTableTypeId INT;
+	DECLARE @MainTableId INT;
+	DECLARE @MainTableName VARCHAR(255);
+	DECLARE @InternalAccessLevel VARCHAR(50);
+	--AccessLevels are 1) ForProjectSetup 2) ForUI 3) ForProjectConfigJSON
+
+	SET @InternalAccessLevel = @AccessLevel
+	SELECT @MainTableTypeId = TABLE_TYP_ID from SSDL.SPEND_DCC_TABLE_TYP_MST WHERE TABLE_TYP_CODE = 101;
+
+	SELECT
+		@MainTableId = TableId,
+		@MainTableName = TableName
+	FROM SSDL.SPEND_SSDL_Table
+	WHERE TableTypeID = @MainTableTypeId AND TableName = @TableName;
+
+	IF ISNULL(@MainTableId, 0) = 0
+	BEGIN
+		SELECT
+			@MainTableName AS TableName,
+			@MainTableTypeId AS TableTypeId,
+			NULL AS TableSchemaID,
+			A.ColumnName,
+			A.DisplayColumnName,
+			A.FieldCategory,
+			A.DataTypeID,
+			C.DATA_TYP_NAME AS DataTypeName,
+			A.ColumnVisibilityScopeEnumCode,
+			A.IsSelectionMandatory
+		FROM SSDL.MainTableColumnsMaster A
+		INNER JOIN SSDL.SPEND_DCC_TABLE_DATA_TYP_MST C ON C.DATA_TYP_ID = A.DataTypeID
+		ORDER BY A.ColumnName
+	END
+	ELSE
+	BEGIN
+		WITH MasterTableColumns AS
+		(
+			SELECT
+				A.ColumnName,
+				A.DisplayColumnName,
+				A.FieldCategory,
+				C.DATA_TYP_ID AS DataTypeID,
+				C.DATA_TYP_NAME AS DataTypeName
+			FROM SSDL.MainTableColumnsMaster A
+			INNER JOIN SSDL.SPEND_DCC_TABLE_DATA_TYP_MST C ON C.DATA_TYP_ID = A.DataTypeID
+		),
+		MainTableAndMasterTableColumnsCombined as 
+		(
+			SELECT * FROM MasterTableColumns WHERE @InternalAccessLevel = 'ForProjectSetup'
+			UNION
+			SELECT
+				B.ColumnName,
+				B.DisplayColumnName,
+				B.FieldCategory,
+				B.DataTypeID,
+				D.DATA_TYP_NAME AS DataTypeName
+			FROM SSDL.SPEND_SSDL_TableSchema B
+			LEFT JOIN SSDL.SPEND_DCC_TABLE_DATA_TYP_MST D ON B.DataTypeID = D.DATA_TYP_ID
+			WHERE B.TableID = @MainTableId
+		)
+		SELECT
+			@TableName AS TableName,
+			@MainTableTypeId AS TableTypeId,
+			B.TableSchemaID,
+			A.ColumnName,
+			A.DisplayColumnName,
+			A.FieldCategory,
+			A.DataTypeID,
+			A.DataTypeName,
+			(CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 'ShowOnProjectSetupWorkflowUtilities' ELSE C.ColumnVisibilityScopeEnumCode END) AS ColumnVisibilityScopeEnumCode,
+			C.IsSelectionMandatory,
+			CAST((CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 0 ELSE C.IsBasicColumn END) AS BIT) AS IsBasicColumn
+		FROM MainTableAndMasterTableColumnsCombined A
+		LEFT JOIN SSDL.SPEND_SSDL_TableSchema B ON A.ColumnName = B.ColumnName AND B.TableID = @MainTableId
+		LEFT JOIN SSDL.MainTableColumnsMaster C ON A.ColumnName = C.ColumnName
+		LEFT JOIN SSDL.MainTableColumnsMaster D ON B.ColumnName IS NOT NULL AND B.ColumnName = D.ColumnName
+		WHERE
+		(
+			(@InternalAccessLevel = 'ForUI' AND B.ColumnName IS NOT NULL
+				AND (
+						(D.ColumnName IS NOT NULL AND D.ColumnVisibilityScopeEnumCode = 'ShowOnProjectSetupWorkflowUtilities')
+						OR B.FieldCategory = 'ERP - Custom Fields'
+				)
+			)
+			OR (@InternalAccessLevel = 'ForProjectSetup')
+			OR (@InternalAccessLevel = 'ForProjectConfigJSON' AND B.ColumnName IS NOT NULL
+				AND (
+						(D.ColumnName IS NOT NULL)
+						OR B.FieldCategory = 'ERP - Custom Fields'
+				)
+			)
+		)
+	END
+END
+GO
 
 TRUNCATE TABLE SSDL.MainTableColumnsMaster
 
