@@ -651,6 +651,9 @@ SELECT @TableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableName = 'Main2' A
 DECLARE @intDataTypeID INT = 0;
 SELECT @intDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Int';
 
+DECLARE @floatDataTypeID INT = 0;
+SELECT @floatDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'float';
+
 IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TableSchema WHERE TableID = @TableId AND ColumnName = 'Custom_Col_A')
 BEGIN
     INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
@@ -665,5 +668,10 @@ IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TableSchema WHERE TableID = @TableId
 BEGIN
     INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
     VALUES(@TableId, 'GEP_RULE_ID', 'GEP Rule ID (Classification)', 'GEP - Admin - Maintenance', @intDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 0);
+END
+IF NOT EXISTS(SELECT 1 FROM SSDL.SPEND_SSDL_TableSchema WHERE TableID = @TableId AND ColumnName = 'GEP_RULE_ID')
+BEGIN
+    INSERT INTO SSDL.SPEND_SSDL_TableSchema(TableId, ColumnName, DisplayColumnName, FieldCategory, DataTypeID, ColumnDataLength, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate, IsInputField)
+    VALUES(@TableId, 'GEP_NORM_INVOICE_UNIT_PRICE_USD', 'GEP Normalized Invoice Unit Price (USD)', 'GEP - Amount', @floatDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 1);
 END
 GO
