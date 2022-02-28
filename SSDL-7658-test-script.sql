@@ -676,3 +676,81 @@ BEGIN
     VALUES(@TableId, 'GEP_NORM_INVOICE_UNIT_PRICE_USD', 'GEP Normalized Invoice Unit Price (USD)', 'GEP - Amount', @floatDataTypeID, 0, 1, GETDATE(), 1, GETDATE(), 1);
 END
 GO
+
+/*
+=======================================================================================================================================
+Date			| Author				| JIRA ID			| Change Description
+=======================================================================================================================================
+
+13-10-2020       Pradeep Kumar Yadav     SSDL-2032         Main Column fields added
+=======================================================================================================================================
+
+*/
+ALTER PROCEDURE SSDL.SPEND_DL_GET_JOB_DETAIL_BY_JOBID   
+	@JobId INT  
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @bin VARBINARY(128) = (CAST(OBJECT_NAME(@@PROCID) AS VARBINARY(128)))
+	SET CONTEXT_INFO @bin
+	
+	DECLARE @main_column VARCHAR(MAX), @spend_fields VARCHAR(MAX), @date_fields VARCHAR(MAX),
+	@spend_displayname VARCHAR(MAX), @date_displayname VARCHAR(MAX);
+	DECLARE @HasStepForMainTable BIT = 0;
+
+	SELECT
+		@main_column = JSON_VALUE(settingValue,'$.MAIN_COLUMN'),  
+		@date_fields = JSON_VALUE(settingValue,'$.DATE_FIELDS'),  
+		@spend_fields = JSON_VALUE(settingValue,'$.SPEND_FIELDS'),
+		@spend_displayname = JSON_VALUE(settingValue,'$.DISPLAY_SPEND_FIELDS'),
+		@date_displayname = JSON_VALUE(settingValue,'$.DISPLAY_DATE_FIELDS')
+	FROM SPEND_SSDL_JOB_DETAILS WHERE jobId = @JobId
+
+	IF EXISTS(SELECT 1 FROM SSDL.JOB_DETAILS WHERE JobId = @JobId) OR EXISTS(SELECT 1 FROM SSDL.WorkflowEventSetting WHERE JobId = @JobId)
+	BEGIN
+		SELECT @HasStepForMainTable = 1
+	END
+
+	SELECT  
+		A.JOB_ID,  
+		A.JOB_NAME,  
+		A.JOB_STATUS,  
+		A.PARTNERCODE,  
+		A.CREATED_BY,   
+		--U.FirstName + ' ' + U.LastName    AS CREATED_USER_NAME,    
+		' ' AS CREATED_USER_NAME,    
+		A.START_DATE,   
+		A.END_DATE,     
+		A.ISSCHEDULE,  
+		A.SCHEDULED_DATE,   
+		A.REQUEST_DATE,     
+		A.IsEndBy,       
+		A.REQUEST_TYPE,   
+		A.JOB_TYPE_NAME,   
+		A.JOB_RUN_TYPE,  
+		A.JOB_FREQUENCY,  
+		A.JOB_PERIOD_SCOPE,   
+		A.RecurrencePatternOption,   
+		A.TimeZone,   
+		A.ScheduledHours,  
+		A.ScheduledMinutes,   
+		A.ScheduledAMPM,    
+		A.IsConfiguredJob,    
+		A.IsAllData,       
+		A.TotalOccurence,  
+		A.PeriodScopeStartDate,    
+		A.PeriodScopeEndDate ,  
+		A.JOB_VALID_FROM,    
+		A.JOB_VALID_THRU, 
+		A.ALLOW_END_TO_END_RUN,
+		ISNULL(@main_column,'') as Main_Column, ISNULL(@spend_fields,'') as Spend_Field, ISNULL(@date_fields,'') as Date_Field,   
+		ISNULL(@spend_displayname,'') as Spend_DisplayName , ISNULL(@date_displayname,'') as Date_DisplayName,
+		A.PARENT_JOB_ID,
+		(CASE WHEN @JobId IS NOT NULL THEN @HasStepForMainTable ELSE 0 END) AS HasStepForMainTable
+	FROM [SPEND_DL_SA_ACIVITYWORKMASTER]   A       
+	--full JOIN SSDL.UM_UserPartnerMapping UPM     ON A.CREATED_BY = UPM.CONTACTCODE       
+	--full JOIN SSDL.UM_Users U                    ON UPM.UserId = U.UserId                  
+	WHERE A.JOB_ID = @JobId and A.isdeleted = 0
+END
+GO
