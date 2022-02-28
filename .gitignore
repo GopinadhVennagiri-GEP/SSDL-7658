@@ -1,0 +1,23 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+
+.vs
+packages
+pkg
+/GEP PlatformServices/DLL
+/spend.selfserve.profile/spend.selfserve.profile.service/pkg/Debug/spend.selfserve.profile.apiPkg/Code
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+/GEP PlatformServices/Dacpac
+*.user
+*~*.xlsx
