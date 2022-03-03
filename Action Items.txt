@@ -29,3 +29,44 @@ Second priority:
 3. Test case preparation
 4. API automation
 	- Distribute APIs among members
+
+Project setup detailed action items:
+
+	1. Preparing the Excel with the dummy data.
+		a. this will include the combination of the columns and the scnarios.
+		b. IsBasicColumn,IsSelectionMandatory,ColumnVisibilityscope.
+		c. the values for ColumnVisibilityscope are show vs hide.
+	2. Creating a Stored Procedure with the req params to save or update main table with the columns.
+		a. tablename, list of maintablecolumn. 
+	3. Create API on service side.
+	
+		
+
+if(tablename doesnot exist)
+	then insert new maintable spendssdltable.
+if(tablename exist)
+	get the tableId = @tableId
+if(tableId is not null)
+	then insert all the differential columns into spendssdltableschema.
+
+1. Projectsetup page loads -> GetAllTablesListByTableType,api will be called to get all the available maintables.
+	 a. if tables are present, the grid will show the available maintables.
+	 b. if tables are not present, then add main table section will be shown.
+2. user clicks on Add button 
+	a. GetMainTableColumnsByParams, this api will be called
+	b. user performs some operation and saves
+		a. new Save api{SaveMainTableWithColumns} call will be called.
+		b. new Bao
+		c. new Dao
+		d. new Sp for Save.
+3.  user clicks on Edit
+	a. GetMainTableColumnsByParams, this api will be called
+	b. user performs some operation and saves
+		a. Save api{SaveMainTableWithColumns} call will be called.
+		b. Bao
+		c. Dao
+		d. Sp for Save.
+
+	
+
+	
