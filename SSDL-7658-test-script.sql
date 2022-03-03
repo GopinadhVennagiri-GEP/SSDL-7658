@@ -24,7 +24,7 @@ CREATE TABLE SSDL.MainTableColumnsMaster
 )
 GO
 
-CREATE OR ALTER PROCEDURE SSDL.MainTableColumns_GetByParams
+CREATE PROCEDURE SSDL.MainTableColumns_GetByParams
 (
 	@TableName VARCHAR(255) = NULL,
 	@AccessLevel VARCHAR(50) = 'ForUI'
@@ -59,7 +59,8 @@ BEGIN
 			C.DATA_TYP_NAME AS DataTypeName,
 			A.ColumnVisibilityScopeEnumCode,
 			A.IsSelectionMandatory,
-            A.IsBasicColumn
+            A.IsBasicColumn,
+			cast(0 as bit) as IsSelected
 		FROM SSDL.MainTableColumnsMaster A
 		INNER JOIN SSDL.SPEND_DCC_TABLE_DATA_TYP_MST C ON C.DATA_TYP_ID = A.DataTypeID
 		ORDER BY A.ColumnName
@@ -102,10 +103,11 @@ BEGIN
 			A.DataTypeName,
 			(CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 'ShowOnProjectSetupWorkflowUtilities' ELSE C.ColumnVisibilityScopeEnumCode END) AS ColumnVisibilityScopeEnumCode,
 			C.IsSelectionMandatory,
-			CAST((CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 0 ELSE C.IsBasicColumn END) AS BIT) AS IsBasicColumn
+			CAST((CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 0 ELSE C.IsBasicColumn END) AS BIT) AS IsBasicColumn,
+			CAST((CASE WHEN B.TableSchemaID IS NULL THEN 0 ELSE 1 END) AS BIT) AS IsSelected
 		FROM MainTableAndMasterTableColumnsCombined A
 		LEFT JOIN SSDL.SPEND_SSDL_TableSchema B ON A.ColumnName = B.ColumnName AND B.TableID = @MainTableId
-		LEFT JOIN SSDL.MainTableColumnsMaster C ON A.ColumnName IS NOT NULL AND A.ColumnName = C.ColumnName
+		LEFT JOIN SSDL.MainTableColumnsMaster C ON A.ColumnName = C.ColumnName
 		LEFT JOIN SSDL.MainTableColumnsMaster D ON B.ColumnName IS NOT NULL AND B.ColumnName = D.ColumnName
 		WHERE
 		(
