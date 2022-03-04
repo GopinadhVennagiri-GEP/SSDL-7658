@@ -24,7 +24,7 @@ CREATE TABLE SSDL.MainTableColumnsMaster
 )
 GO
 
-CREATE PROCEDURE SSDL.MainTableColumns_GetByParams
+CREATE OR ALTER PROCEDURE SSDL.MainTableColumns_GetByParams
 (
 	@TableName VARCHAR(255) = NULL,
 	@AccessLevel VARCHAR(50) = 'ForUI'
@@ -749,7 +749,7 @@ BEGIN
 		ISNULL(@main_column,'') as Main_Column, ISNULL(@spend_fields,'') as Spend_Field, ISNULL(@date_fields,'') as Date_Field,   
 		ISNULL(@spend_displayname,'') as Spend_DisplayName , ISNULL(@date_displayname,'') as Date_DisplayName,
 		A.PARENT_JOB_ID,
-		(CASE WHEN @JobId IS NOT NULL THEN @HasStepForMainTable ELSE 0 END) AS HasStepForMainTable
+		CAST((CASE WHEN @JobId IS NOT NULL THEN @HasStepForMainTable ELSE 0 END) AS BIT) AS HasStepForMainTable
 	FROM [SPEND_DL_SA_ACIVITYWORKMASTER]   A       
 	--full JOIN SSDL.UM_UserPartnerMapping UPM     ON A.CREATED_BY = UPM.CONTACTCODE       
 	--full JOIN SSDL.UM_Users U                    ON UPM.UserId = U.UserId                  
