@@ -1,0 +1,32 @@
+
+1. From Consolidation to Publish
+    1) Wherever Custom columns are filtered, make sure they are filtere by FieldCategory instead of name or Column name or DisplayColumnName.
+
+2. Consolidation
+    1) Spend Normalization chil popup:
+    GEP Norm Spend columns are expected.
+
+3. Before merging committing or merging your code, scan through all plugins to check for any filters applied on main table columns.
+
+4. We have to remove unused columns specially custom columns.
+BE CAREFUL!!!!!!!!
+
+5. 
+
+Plugins per circle:
+1. Consolidation
+    1) spend-consolidate-add-master-based-normalization-lib
+    2) spend-consolidate-cleanse-main-lib
+    3) spend-consolidate-exclusion-list-popup-lib
+    4) spend-consolidate-master-based-normalization-lib
+    5) spend-consolidate-normalization-lib
+    6) spend-consolidate-system-defined-edit-lib
+    7) spend-consolidate-system-defined-lib
+    8) spend-consolidate-user-def-query-child-lib
+    9) spend-consolidate-user-def-query-parent-lib
+    10) spend-date-normalization-lib
+    11) spend-execlusion-lib
+    12) spend-moving-main-table-edit-lib
+    13) spend-moving-to-main-table-lib
+    14) spend-normalization-lib
+    
