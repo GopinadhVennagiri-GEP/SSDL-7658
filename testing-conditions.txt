@@ -30,3 +30,5 @@ Plugins per circle:
     13) spend-moving-to-main-table-lib
     14) spend-normalization-lib
     
+Review of stories:
+https://smartbygep.atlassian.net/browse/SSDL-4223
