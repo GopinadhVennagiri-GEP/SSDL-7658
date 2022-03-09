@@ -1,0 +1,51 @@
+Features completed: 
+
+1) Client side pagination 
+
+2) API to get main table columns by name 
+
+3) Basic detail page load – get all main tables 
+
+4) Basic detail page load – get main table by changing drop down
+
+5) Download api for Multi main table in Project Setup
+
+6) Save Api for Multi main table in Project Setup
+
+7) Client Side Filtering 
+
+8) Client Side Sorting
+
+9) Consolidation - Changes in 10 plugins according to the selection of mainTable in the basic detail.
+
+10) 
+
+Blockers :
+
+Gopinadh :   
+
+            Nexxe core Issue  
+
+            Project setup widget issue  
+
+            Footer button issue 
+
+            Client Side Pagination 
+
+            Client side selection retention 
+
+            Client side Sorting, Filtering, Search 
+
+Vishal:   
+
+            New Cube endpoint issue 
+
+            UAT/Production deployment 
+
+            Removal of 2 unused columns from Prod DB & Addition of missing columns which were found as discrepancy.  
+
+            New ADF change for adding new parameter for main table name. 
+
+Akshay:   
+
+            Multiple discussions for finalizing main table Columns
