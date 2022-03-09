@@ -32,3 +32,45 @@ Plugins per circle:
     
 Review of stories:
 https://smartbygep.atlassian.net/browse/SSDL-4223
+
+1. Find all references of GetMainTableColumn() and change accordingly
+2. Find all references to BAO/DAO methods responsible for retrieving main table columns and change them accordingly.
+    a) ProfileBAO/ProfileDAO -> GetMainTableColumns
+        Used in :
+        1) SpendCubeRefreshBAO -> GetFeedbackSsdlColumnMapping
+    b) 
+
+3. Examples of getting Main table columns
+Safe dependencies:
+    a) ProfileDAO
+        1) GetMainTableColumns
+        2) GetAllMainTableColumns
+        3) GetAllTableColumns
+    b) ProfileBAO
+        1) GetMainTableColumns
+        2) GetAllMainTableColumns
+        3) GetAllTableColumns
+    c) ImportUtilityBAO
+        1) GetAllTableColumns
+    d) TableDAO
+        1) GetAllTablesAndColumns
+
+Dangerous dependencies:
+    a) SpendCubeRefreshBAO - DANGER
+        1) GetFeedbackSsdlColumnMapping
+    b) ActivityConfigurationBAO
+        1) GetSupplierClusteringColumn
+        2) GetClassifyClusteringColumn
+    c) ClassfyAIBAO
+        1) GetSupplierClusteringColumn
+        2) GetClassifyClusteringColumn
+    d) ProfileSplitConfigurationBAO
+        1) GetSupplierClusteringColumn
+        2) GetClassifyClusteringColumn
+    e) PublishCubeSplitConfigurationBAO
+        1) GetSupplierClusteringColumn
+        2) GetClassifyClusteringColumn
+    f) ProjectSetupBAO - DANGER
+        1) GetDataLakeMapping - connected with ProjectSetupDAO - GetMainTableColumns
+    g) ProjectSetupDAO - DANGER
+        1) GetMainTableColumns
