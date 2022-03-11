@@ -47,12 +47,19 @@ Safe dependencies:
         2) GetAllMainTableColumns
         3) GetAllTableColumns
     b) ProfileBAO
-        1) GetMainTableColumns
-        2) GetAllMainTableColumns
-        3) GetAllTableColumns
-    c) ImportUtilityBAO
-        1) GetAllTableColumns
-    d) TableDAO
+        1) GetMainTableColumns - No change
+        2) GetAllMainTableColumns - Done - 5 references replaced with new code
+            References:
+            2.1) ActivityConfigurationBAO.cs
+            2.2) ClassfyAIBAO.cs
+            2.3) ConsolidationWorkflowBAO.cs
+            2.4) ProfileSplitConfigurationBAO.cs
+            2.5) PublishCubeSplitConfigurationBAO.cs
+
+        3) GetAllTableColumns - No change
+    c) ImportUtilityBAO - Done
+        1) GetAllTableColumns - connected with TableDAO.GetAllTablesAndColumns
+    d) TableDAO - Done
         1) GetAllTablesAndColumns
 
 Dangerous dependencies:
@@ -71,6 +78,10 @@ Dangerous dependencies:
         1) GetSupplierClusteringColumn
         2) GetClassifyClusteringColumn
     f) ProjectSetupBAO - DANGER
-        1) GetDataLakeMapping - connected with ProjectSetupDAO - GetMainTableColumns
+        1) GetDataLakeMapping - connected with ProjectSetupDAO.GetMainTableColumns
     g) ProjectSetupDAO - DANGER
         1) GetMainTableColumns
+
+Write a query to identify all columns of OPS_MAIN that are being used in workflows and utilities but are not active.
+
+Scan C# and Angular and SQL for all places where CUSTOM_FIELD is being filtered.
