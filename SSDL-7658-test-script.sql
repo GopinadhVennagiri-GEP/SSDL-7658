@@ -62,7 +62,8 @@ BEGIN
             A.IsBasicColumn,
 			cast(0 as BIT) as IsSelected,
 			A.IsPrimaryKey,
-			A.IsInputField
+			A.IsInputField,
+			A.ColumnDataLength
 		FROM SSDL.MainTableColumnsMaster A
 		INNER JOIN SSDL.SPEND_DCC_TABLE_DATA_TYP_MST C ON C.DATA_TYP_ID = A.DataTypeID
 		ORDER BY A.ColumnName
@@ -108,7 +109,8 @@ BEGIN
 			CAST((CASE WHEN A.FieldCategory = 'ERP - Custom Fields' THEN 0 ELSE C.IsBasicColumn END) AS BIT) AS IsBasicColumn,
 			CAST((CASE WHEN B.TableSchemaID IS NULL THEN 0 ELSE 1 END) AS BIT) AS IsSelected,
 			D.IsPrimaryKey,
-			D.IsInputField
+			D.IsInputField,
+			B.ColumnDataLength
 		FROM MainTableAndMasterTableColumnsCombined A
 		LEFT JOIN SSDL.SPEND_SSDL_TableSchema B ON A.ColumnName = B.ColumnName AND B.TableID = @MainTableId
 		LEFT JOIN SSDL.MainTableColumnsMaster C ON A.ColumnName = C.ColumnName

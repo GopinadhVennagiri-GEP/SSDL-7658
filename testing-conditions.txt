@@ -85,3 +85,11 @@ Dangerous dependencies:
 Write a query to identify all columns of OPS_MAIN that are being used in workflows and utilities but are not active.
 
 Scan C# and Angular and SQL for all places where CUSTOM_FIELD is being filtered.
+
+Pending items:
+https://smartbygep.atlassian.net/browse/SSDL-11141
+https://smartbygep.atlassian.net/browse/SSDL-11146
+https://smartbygep.atlassian.net/browse/SSDL-9975
+https://smartbygep.atlassian.net/browse/SSDL-10895
+https://smartbygep.atlassian.net/browse/SSDL-6433
+https://smartbygep.atlassian.net/browse/SSDL-10535
