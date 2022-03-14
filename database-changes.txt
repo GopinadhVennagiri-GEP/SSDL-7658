@@ -1,0 +1,7 @@
+1. GET_SOURCE_TABLE_MAPPING_DETAILS.sql
+2. MainTableColumns_GetByParams.sql
+3. MainTable_AddCustomColumn.sql
+4. SPEND_DL_GET_JOB_DETAIL_BY_JOBID.sql
+5. TableSchema_GetByTableId.sql
+6. MainTableColumnsMaster.sql
+7. SPEND_SSDL_TableSchema.sql
