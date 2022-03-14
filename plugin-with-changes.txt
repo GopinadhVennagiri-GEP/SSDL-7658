@@ -16,3 +16,8 @@ Plugins per circle:
     14) spend-normalization-lib
 2. Project Setup
     1) 
+3. Workflow
+    1) spend-basic-details
+    2) spend-landing-page
+    3) spend-stage-configuration
+    4) 
