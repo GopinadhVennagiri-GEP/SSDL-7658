@@ -13,22 +13,6 @@ BE CAREFUL!!!!!!!!
 
 5. 
 
-Plugins per circle:
-1. Consolidation
-    1) spend-consolidate-add-master-based-normalization-lib
-    2) spend-consolidate-cleanse-main-lib
-    3) spend-consolidate-exclusion-list-popup-lib
-    4) spend-consolidate-master-based-normalization-lib
-    5) spend-consolidate-normalization-lib
-    6) spend-consolidate-system-defined-edit-lib
-    7) spend-consolidate-system-defined-lib
-    8) spend-consolidate-user-def-query-child-lib
-    9) spend-consolidate-user-def-query-parent-lib
-    10) spend-date-normalization-lib
-    11) spend-execlusion-lib
-    12) spend-moving-main-table-edit-lib
-    13) spend-moving-to-main-table-lib
-    14) spend-normalization-lib
     
 Review of stories:
 https://smartbygep.atlassian.net/browse/SSDL-4223
@@ -43,9 +27,9 @@ https://smartbygep.atlassian.net/browse/SSDL-4223
 3. Examples of getting Main table columns
 Safe dependencies:
     a) ProfileDAO
-        1) GetMainTableColumns
-        2) GetAllMainTableColumns
-        3) GetAllTableColumns
+        1) GetMainTableColumns - No change
+        2) GetAllMainTableColumns - No change
+        3) GetAllTableColumns - No change
     b) ProfileBAO
         1) GetMainTableColumns - No change
         2) GetAllMainTableColumns - Done - 5 references replaced with new code
@@ -55,7 +39,6 @@ Safe dependencies:
             2.3) ConsolidationWorkflowBAO.cs
             2.4) ProfileSplitConfigurationBAO.cs
             2.5) PublishCubeSplitConfigurationBAO.cs
-
         3) GetAllTableColumns - No change
     c) ImportUtilityBAO - Done
         1) GetAllTableColumns - connected with TableDAO.GetAllTablesAndColumns

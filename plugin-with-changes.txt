@@ -1,0 +1,18 @@
+Plugins per circle:
+1. Consolidation
+    1) spend-consolidate-add-master-based-normalization-lib
+    2) spend-consolidate-cleanse-main-lib
+    3) spend-consolidate-exclusion-list-popup-lib
+    4) spend-consolidate-master-based-normalization-lib
+    5) spend-consolidate-normalization-lib
+    6) spend-consolidate-system-defined-edit-lib
+    7) spend-consolidate-system-defined-lib
+    8) spend-consolidate-user-def-query-child-lib
+    9) spend-consolidate-user-def-query-parent-lib
+    10) spend-date-normalization-lib
+    11) spend-execlusion-lib
+    12) spend-moving-main-table-edit-lib
+    13) spend-moving-to-main-table-lib
+    14) spend-normalization-lib
+2. Project Setup
+    1) 
