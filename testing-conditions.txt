@@ -3,7 +3,7 @@
     1) Wherever Custom columns are filtered, make sure they are filtere by FieldCategory instead of name or Column name or DisplayColumnName.
 
 2. Consolidation
-    1) Spend Normalization chil popup:
+    1) Spend Normalization child popup:
     GEP Norm Spend columns are expected.
 
 3. Before merging committing or merging your code, scan through all plugins to check for any filters applied on main table columns.
@@ -86,10 +86,44 @@ Write a query to identify all columns of OPS_MAIN that are being used in workflo
 
 Scan C# and Angular and SQL for all places where CUSTOM_FIELD is being filtered.
 
-Pending items:
+Pending stories/tasks:
 https://smartbygep.atlassian.net/browse/SSDL-11141
 https://smartbygep.atlassian.net/browse/SSDL-11146
 https://smartbygep.atlassian.net/browse/SSDL-9975
 https://smartbygep.atlassian.net/browse/SSDL-10895
 https://smartbygep.atlassian.net/browse/SSDL-6433
 https://smartbygep.atlassian.net/browse/SSDL-10535
+
+Special conditions to filter out main table columns:
+1. Spend Normalization needs GEP_NORM_SPEND_ columns
+2. Publish - one time flag displays only Nvarchar data type while creating custom columns.
+3. Exclusion summary - ignores GEP_EXCLUDE column
+4. Classify through rules - hard code columns are:
+    a) GEP_CATEGORY_CODE, GEP_AI_SOURCE_CF, GEP_CF_SOURCE, GEP_CF_SOURCE_2, GEP_RULE_ID
+    b) Uses columns that either match GEP_ or CUSTOM_
+5. spend-Normalization-historical-data
+    a) Uses columns that match either GEP_ULT_PARENT OR GEP_NORM_SUPP_NAME
+6. Normalization through AI
+    a) Uses columns that either match GEP_ or CUSTOM_
+7. ps-classification-clustering
+    a) Uses that match GEP_NORM_SPEND and should not end with WITHOUT_TAX
+    b) Uses GEP_
+8. ps-supplier-normalization-clustering
+    a) Uses that match GEP_NORM_SPEND and should not end with WITHOUT_TAX
+    b) Uses GEP_
+9. rule-configuration.ts
+    a) hard coded: GEP_Reviewer_Status, GEP_Reviewer_Comments, OLD_GEP_NORM_SUPP_NAME, OLD_GEP_ULT_PARENT, GEP_NORM_SUPP_NAME_OPERATOR, GEP_NORM_SUPP_NAME_VALUE, GEP_ULT_PARENT_OPERATOR, GEP_ULT_PARENT_VALUE
+10. Vne-configure-stage
+    a) hard coded: GEP_NORM_SUPP_NAME
+11. spend-vne-generate
+    a) hard coded: GEP_NORM_SUPP_NAME, GEP_VNE_HISTORICAL_FLAG, GEP_VNE_SOURCE,
+    GEP_VNE_SOURCE_2, GEP_AI_SOURCE_VNE, GEP_ULT_PARENT, GEP_UP_HISTORICAL_FLAG,
+    GEP_UP_SOURCE, GEP_UP_SOURCE_2, GEP_AI_SOURCE_UP, GEP_UP_STATUS_FLAG, GEP_VNE_STATUS_FLAG
+12. vne-rules-popup
+    a) Uses columns that either match GEP_ or CUSTOM_
+    b) hard coded : GEP_ULT_PARENT, GEP_UP_SOURCE, GEP_NORM_SUPP_NAME, GEP_VNE_SOURCE, GEP_VNE_SOURCE_2, GEP_AI_SOURCE_VNE, GEP_ULT_PARENT, GEP_UP_SOURCE, GEP_UP_SOURCE_2, GEP_AI_SOURCE_UP, GEP_RULE_ID
+14. trendcheck-table
+    a) hard coded: GEP_NORM_SPEND
+15. AIfields
+    a) hard coded: GEP_NORM_SUPP_NAME, GEP_VNE_SOURCE, GEP_VNE_SOURCE_2, GEP_AI_SOURCE_VNE, GEP_ULT_PARENT, GEP_UP_SOURCE, GEP_UP_SOURCE_2, GEP_AI_SOURCE_UP
+    

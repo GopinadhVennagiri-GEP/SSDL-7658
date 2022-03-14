@@ -1,0 +1,15 @@
+
+Done - update SSDL schema
+Done - Consolidation - Moving to main step 2 - download mapping
+Done - changes to Import Utility - SP get columns
+Done - changes to Import Utility - custom field filter removed.
+Pending - Check and change project setup - clustering columns GET API
+Pending - Connect with Pratik for code review changes
+Pending - Check and replace all places where OPS_MAIN or 1 is hardcoded for main table.
+Pending - Check impact on MBN - BaseTableId
+Pending - check all places with custom field conditions
+Pending - check all places with GEP conditions
+Pending - remove all places in C# where it's fetching all main table columns or active columns
+Pending - Ask PMG since for default selected columns of GEP_NORM_SPEND_USD and GEP_NORM_DATE in Basic Detail sections.
+Pending - Check Data lake mapping screen.
+Pending - Check Clustering screens in project setup and ensure that it's hardcoded for OPS_MAIN.
