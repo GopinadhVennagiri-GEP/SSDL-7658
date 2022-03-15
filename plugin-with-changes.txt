@@ -15,9 +15,21 @@ Plugins per circle:
     13) spend-moving-to-main-table-lib
     14) spend-normalization-lib
 2. Project Setup
-    1) 
+    1) spend-project-setup-add-maintable
+    2) spend-project-setup-multi-maintable
+    3) spend-api
+    4) spend-data-table
+    5) spend-ps-configuration-setup
 3. Workflow
     1) spend-basic-details
     2) spend-landing-page
     3) spend-stage-configuration
-    4) 
+    4)
+4. Add Custom Column 
+    1) spend-add-custom-column
+    2) Spend-moving-main-table-upload
+    3) Spend-api
+
+5. Profile 
+    1) spend-reporting-field
+    2) spend-duplicate-transaction    
