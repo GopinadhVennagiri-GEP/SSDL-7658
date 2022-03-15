@@ -1,0 +1,24 @@
+1. On edit screen table name is readonly.
+raise an error in sp when table name is same. 
+Reset Functionality
+2. Main Table name acceptance(with or without spaces). - pmg
+3. Validation on the mainTable name.
+5. Sorting on Pagination should also be allowed.
+   Image on the Project setup main screen.
+   loaders for both the screens.
+   show error msg for the api calls via pop up.
+   Table css 
+     Pagination {parent,child}25,50,75,100 -pmg 
+
+
+High Imapacting issues :
+Basic columns unchecked issue.\
+Save,Cancel,Reset buttons should be developed in normal html buttons instead of modal button.
+
+
+Blockers :
+change the getapi in Project setup frst screen. -- done
+change the behaviour subject and pass the table name via childconfig. -- done
+Few fields should be disabled for editing {IsSelectionMandatory}.
+ Pagination {parent,child}25,50,75,100 -pmg 
+ Main Table name acceptance(with or without spaces). - pmg
