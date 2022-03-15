@@ -1,81 +1,87 @@
-
-1. From Consolidation to Publish
+Action items before or during QC:
+1. From C#, SQL, Angular (Workflow and Utilities)
     1) Wherever Custom columns are filtered, make sure they are filtere by FieldCategory instead of name or Column name or DisplayColumnName.
-
 2. Consolidation
     1) Spend Normalization child popup:
-    GEP Norm Spend columns are expected.
+        GEP Norm Spend columns are expected.
+    Ans - only testing required
 
-3. Before merging committing or merging your code, scan through all plugins to check for any filters applied on main table columns.
+3. Before committing or merging your code, scan through all plugins to check for any filters applied on main table columns.
 
-4. We have to remove unused columns specially custom columns.
+4. We have to remove unused columns specially custom columns on prod later.
 BE CAREFUL!!!!!!!!
 
-5. 
+5. Done - Review of stories:
+    https://smartbygep.atlassian.net/browse/SSDL-4223
 
-    
-Review of stories:
-https://smartbygep.atlassian.net/browse/SSDL-4223
+6. Find all references of Get columns () and change accordingly
+    Examples of getting Main table columns
+    Safe dependencies:
+        a) ProfileDAO
+            1) GetMainTableColumns
+                References:
+                    SpendCubeRefreshBAO.GetFeedbackSsdlColumnMapping
+            2) GetAllMainTableColumns - No change
+            3) GetAllTableColumns - No change
+        b) ProfileBAO
+            1) GetMainTableColumns - No change
+            2) GetAllMainTableColumns - Done - 5 references replaced with new code
+                References:
+                2.1) ActivityConfigurationBAO.cs
+                2.2) ClassfyAIBAO.cs
+                2.3) ConsolidationWorkflowBAO.cs
+                2.4) ProfileSplitConfigurationBAO.cs
+                2.5) PublishCubeSplitConfigurationBAO.cs
+            3) GetAllTableColumns - No change
+        c) ImportUtilityBAO - Done
+            1) GetAllTableColumns - connected with TableDAO.GetAllTablesAndColumns
+        d) TableDAO - Done
+            1) GetAllTablesAndColumns
 
-1. Find all references of GetMainTableColumn() and change accordingly
-2. Find all references to BAO/DAO methods responsible for retrieving main table columns and change them accordingly.
-    a) ProfileBAO/ProfileDAO -> GetMainTableColumns
-        Used in :
-        1) SpendCubeRefreshBAO -> GetFeedbackSsdlColumnMapping
-    b) 
+7. Removed processing active columns in C#
+8. Write a query to identify all columns of OPS_MAIN that are being used in workflows and utilities but are not active.
 
-3. Examples of getting Main table columns
-Safe dependencies:
-    a) ProfileDAO
-        1) GetMainTableColumns - No change
-        2) GetAllMainTableColumns - No change
-        3) GetAllTableColumns - No change
-    b) ProfileBAO
-        1) GetMainTableColumns - No change
-        2) GetAllMainTableColumns - Done - 5 references replaced with new code
-            References:
-            2.1) ActivityConfigurationBAO.cs
-            2.2) ClassfyAIBAO.cs
-            2.3) ConsolidationWorkflowBAO.cs
-            2.4) ProfileSplitConfigurationBAO.cs
-            2.5) PublishCubeSplitConfigurationBAO.cs
-        3) GetAllTableColumns - No change
-    c) ImportUtilityBAO - Done
-        1) GetAllTableColumns - connected with TableDAO.GetAllTablesAndColumns
-    d) TableDAO - Done
-        1) GetAllTablesAndColumns
+Testing scenarios:
+1. Project setup screen
+    1) See available main tables
+    2) Add main table
+    3) Edit OPS_MAIN table
+    4) Enable new columns
+    5) Sorting
+    6) Filtering
+    7) Pagination
+    8) Basic Columns checkbox
+    9) Mandatory selection
+    10) unable to de-select saved columns
+2. Basic details
+    Before save:
+    1) See all main tables
+    2) Select a main table and verify loader is appearing and going as soon as columns are fetched
+    3) Spend and Date columns of the selected main table should be visible in Basic Details.
+    After save:
+    1) Main table dropdown should be disabled only if at least one setting exist in the backend between consolidation to publish.
+    2) 
+3. 
 
 Dangerous dependencies:
     a) SpendCubeRefreshBAO - DANGER
-        1) GetFeedbackSsdlColumnMapping
-    b) ActivityConfigurationBAO
+        1) GetFeedbackSsdlColumnMapping - Check with Archit
+    b) ActivityConfigurationBAO - Story from Rachael
         1) GetSupplierClusteringColumn
         2) GetClassifyClusteringColumn
-    c) ClassfyAIBAO
+    c) ClassfyAIBAO - Story from Rachael
         1) GetSupplierClusteringColumn
         2) GetClassifyClusteringColumn
-    d) ProfileSplitConfigurationBAO
+    d) ProfileSplitConfigurationBAO - Story from Rachael
         1) GetSupplierClusteringColumn
         2) GetClassifyClusteringColumn
-    e) PublishCubeSplitConfigurationBAO
+    e) PublishCubeSplitConfigurationBAO - Story from Rachael
         1) GetSupplierClusteringColumn
         2) GetClassifyClusteringColumn
     f) ProjectSetupBAO - DANGER
         1) GetDataLakeMapping - connected with ProjectSetupDAO.GetMainTableColumns
     g) ProjectSetupDAO - DANGER
         1) GetMainTableColumns
-
-Write a query to identify all columns of OPS_MAIN that are being used in workflows and utilities but are not active.
-
-Scan C# and Angular and SQL for all places where CUSTOM_FIELD is being filtered.
-
-Pending stories/tasks:
-https://smartbygep.atlassian.net/browse/SSDL-11141
-https://smartbygep.atlassian.net/browse/SSDL-11146
-https://smartbygep.atlassian.net/browse/SSDL-9975
-https://smartbygep.atlassian.net/browse/SSDL-10895
-https://smartbygep.atlassian.net/browse/SSDL-6433
-https://smartbygep.atlassian.net/browse/SSDL-10535
 
 Special conditions to filter out main table columns:
 1. Spend Normalization needs GEP_NORM_SPEND_ columns
@@ -110,3 +116,11 @@ Special conditions to filter out main table columns:
 15. AIfields
     a) hard coded: GEP_NORM_SUPP_NAME, GEP_VNE_SOURCE, GEP_VNE_SOURCE_2, GEP_AI_SOURCE_VNE, GEP_ULT_PARENT, GEP_UP_SOURCE, GEP_UP_SOURCE_2, GEP_AI_SOURCE_UP
     
+
+Pending stories/tasks:
+https://smartbygep.atlassian.net/browse/SSDL-11141
+https://smartbygep.atlassian.net/browse/SSDL-11146
+https://smartbygep.atlassian.net/browse/SSDL-9975
+https://smartbygep.atlassian.net/browse/SSDL-10895
+https://smartbygep.atlassian.net/browse/SSDL-6433
+https://smartbygep.atlassian.net/browse/SSDL-10535
