@@ -33,3 +33,12 @@ Plugins per circle:
 5. Profile 
     1) spend-reporting-field
     2) spend-duplicate-transaction    
+    3) spend-add-new-report
+    4) spend-exclusion-add-report
+    5) spend-exclusion-summary-config
+    6) spend-field-wise-summary
+    7) spend-summary-config
+    8)spend-trendcheck-table
+
+6. Normalize 
+    1) 
