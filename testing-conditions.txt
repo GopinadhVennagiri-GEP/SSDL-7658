@@ -72,13 +72,13 @@ Testing scenarios:
         4.3) Run Consolidation for a fresh new main table then run Profile by adding a new column to same main table.
     5) Run a job by adding a new column to an existing main table via Project Setup.
     6) Custom columns
-        7.1) Test by adding custom columns from following screens.
-        7.2) Added columns should be visible while configuring any job or Import/export as well as project setup.
-        7.3) Run a job by adding custom columns.
+        6.1) Test by adding custom columns from following screens.
+        6.2) Added columns should be visible while configuring any job or Import/export as well as project setup.
+        6.3) Run a job by adding custom columns.
         Available screens for custom columns:
-        7.3) Consolidation - Moving to main table
-        7.4) Consolidation - Master based normalization
-        7.5) Publish - multiple screens?? - check with Vishal Shingote.
+        6.3) Consolidation - Moving to main table
+        6.4) Consolidation - Master based normalization
+        6.5) Publish - multiple screens?? - check with Vishal Shingote.
     7) From Consolidation to Publish - if user has not selected a main table in basic details
         then upon clicking Configure button of any step, they should see a message saying Please select a main table to configure steps.
     8) Consolidation - Master Based Normalization - pending
@@ -93,11 +93,11 @@ Testing scenarios:
 5. Import/export
     1) Run an import request for a main table
     2) Run an export request for a main table
-5. Job export - pending
+6. Job export - pending
     1) 
-6. Cube refresh - pending
+7. Cube refresh - pending
     1) 
-7. Clustering columns - pending
+8. Clustering columns - pending
     1) 
 
 Dangerous dependencies:
