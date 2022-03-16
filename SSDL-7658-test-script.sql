@@ -762,3 +762,73 @@ BEGIN
 	WHERE A.JOB_ID = @JobId and A.isdeleted = 0
 END
 GO
+--Save Main Table SP--
+DROP Procedure SSDL.MainTable_Save
+DROP TYPE SSDL.SPEND_SSDL_TableSchemaTableType
+
+CREATE TYPE SSDL.SPEND_SSDL_TableSchemaTableType AS TABLE
+(
+ColumnName			varchar(255) UNIQUE NOT NULL,
+DisplayColumnName		varchar(255),
+FieldCategory				varchar(255),
+DataTypeId			tinyint NOT NULL,
+ColumnDataLength		varchar(255),
+IsInputField    BIT,
+IsPrimaryKey    BIT
+)
+
+CREATE PROCEDURE SSDL.MainTable_Save
+    (
+
+    @MainTableColumnsDetails  SSDL.SPEND_SSDL_TableSchemaTableType READONLY,
+    @TableName VARCHAR(255) = NULL,
+    @PartnerCode BIGINT
+)
+AS
+BEGIN
+    DECLARE @MainTableId INT;
+    DECLARE @MainTableName VARCHAR(255);
+    DECLARE @TableTypeId INT;
+    DECLARE @TableId INT;
+    
+    SELECT @TableTypeId = Table_Typ_Id
+    FROM SSDL.SPEND_DCC_TABLE_TYP_MST
+    WHERE TABLE_TYP_CODE = '101'
+    SELECT @MainTableName = TABLENAME
+    FROM SSDL.SPEND_SSDL_Table
+    WHERE TABLENAME = @TableName
+    
+    IF NOT EXISTS (SELECT TABLENAME
+    FROM SSDL.SPEND_SSDL_Table
+    WHERE TABLENAME = @TableName )
+        BEGIN
+        INSERT INTO SSDL.SPEND_SSDL_TABLE
+            (TableTypeID, TableName, IsActive, CreatedBy, CreatedDate, LastUpdatedBy, LastUpdatedDate)
+        VALUES(@TableTypeId, @TableName, 1, @PartnerCode, GETDATE(), @PartnerCode, GETDATE())
+    END
+    
+
+     IF  EXISTS (SELECT TABLENAME
+    FROM SSDL.SPEND_SSDL_Table
+    WHERE TABLENAME = @TableName )
+    BEGIN
+        SELECT @TableId = TableId
+        FROM SSDL.SPEND_SSDL_Table
+        WHERE TABLENAME = @TableName and TableTypeID = @TableTypeId
+    END
+    IF @TableId is not null
+    BEGIN
+        INSERT INTO 
+        SSDL.SPEND_SSDL_TableSchema
+            (TableID,ColumnName,DisplayColumnName,FieldCategory,
+            DataTypeID,CreatedBy,CreatedDate,LastUpdatedBy,
+            LastUpdatedDate,IsInputField,IsPrimaryKey)
+        (SELECT @TableId, T1.ColumnName, T1.DisplayColumnName, T1.FieldCategory,
+            T1.DataTypeID, @PartnerCode, GETDATE(), @PartnerCode, GETDATE(), T1.IsInputField,T1.IsPrimaryKey
+        FROM @MainTableColumnsDetails T1
+        LEFT JOIN SSDL.SPEND_SSDL_TableSchema T2 ON T1.ColumnName = T2.ColumnName and T2.TableID = @TableId
+        WHERE T2.TableSchemaID is null
+        )
+    END
+
+END
