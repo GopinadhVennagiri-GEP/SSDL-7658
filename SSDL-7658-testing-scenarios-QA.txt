@@ -1,0 +1,80 @@
+1. Project setup screen
+    1) All main tables of that domain should be visible, specially OPS_MAIN.
+    2) Add main table
+    3) Edit OPS_MAIN table
+    4) Enable new columns
+    5) Sorting
+    6) Filtering
+    7) Pagination
+    8) Basic Columns checkbox
+    9) Mandatory selected columns - user should not be able to de-select them.
+    10) unable to de-select saved columns
+    11) Unseelected columns at the beginning of the table and saved/default selected columns at the end of the table.
+2. Basic details
+    Before save:
+    1) See all main tables
+    2) Changing a main table and verify loader is appearing to fetch the columns.
+    3) If a main table has float and date columns then they should be available in Spend field and Date field dropdowns in Basic Details.
+    After save:
+    1) Main table dropdown should be disabled if at least one setting exist in the backend between consolidation to publish.
+    2) 
+3. Workflow scope:
+    Existing behavior on Prod:
+    1. User can see all main table columns in all configuration screens of Consolidation, excluding un-used Custom columns.
+    2. Once user configures consolidation and runs it,
+        then user only sees columns that have been ran as "Active column" in from Profile to Publish and Import/Export.
+
+    New behavior as per SSDL-7658
+    Configuration:
+    1) Configure a one-time job from Load to Publish with New Load Data
+    2) Configure a one-time job from Load to Publish with Historical
+    3) Configure a one-time job from Load to Publish with Historical + New load data
+    4) From Consolidation to Publish - if user has not selected a main table in basic details
+        then upon clicking Configure button of any step, they should see a message saying Please select a main table to configure steps.
+    5) Custom columns
+        5.1) Test by adding custom columns from following screens.
+        5.2) Added columns should be visible while configuring any job or Import/export as well as project setup.
+    
+    Running a job
+    1) Using Stop After Every Stage
+        1.1) Run Consolidation with a fresh new main table added from Project setup
+            - You should see a message that table schema is changed.
+        1.2) re-run Consolidation in the same job by adding a new column to same main table via Project Setup.
+            - You should see a message that table schema is changed.
+        1.3) Run Consolidation for a fresh new main table then run Profile by adding a new column to same main table.
+    2) Run a job by adding custom columns.
+        Available screens for custom columns:
+        2.2) Consolidation - Moving to main table
+        2.3) Consolidation - Master based normalization
+        2.4) Publish - 4 screens
+            a) Range bucket
+            b) one/time flag
+            c) old/new
+            d) one to many
+    3) Running two jobs with multi main table
+        3.1) User should be able to run a job with one main table
+            and if that job is in paused or stopped or not started status
+            then user should be able to run another job with a different main table.
+4. Job cloning
+    1) While cloning a job, the main table dropdown should be disabled.
+        That means user won't be able to change the main table for a new copy.
+
+Pending:
+1.Consolidation - Master Based Normalization - pending
+    1.1) Each Reference master should be created against a main table as its base.
+    1.2) Currently if user saves a Reference master table in a job and if that Reference master table configuration is already existing in other jobs
+        then same table configuration is copied across all jobs - Built with SSDL-8463 by Hari.
+    1.3) Question - what should happen if user is creating a Reference master table with name that already exists but it was previously created using a different main table.
+    1.4) Generate master for a Reference master table created using a new main table and check if Table is generated successfully or it fails.
+2. Import/export - pending
+    1) Run an import request for a main table
+    2) Run an export request for a main table
+3. Job export - pending
+    1) 
+4. Cube refresh - pending
+    1) 
+5. Clustering columns - pending
+    1) 
+6. Data lake mapping - pending
+    1) 
+7. Show demo of using un-used column.

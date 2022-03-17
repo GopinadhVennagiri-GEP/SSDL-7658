@@ -42,63 +42,7 @@ BE CAREFUL!!!!!!!!
 8. Write a query to identify all columns of OPS_MAIN that are being used in workflows and utilities but are not active.
 
 Testing scenarios:
-1. Project setup screen
-    1) All main tables of that domain should be visible, specially OPS_MAIN.
-    2) Add main table
-    3) Edit OPS_MAIN table
-    4) Enable new columns
-    5) Sorting
-    6) Filtering
-    7) Pagination
-    8) Basic Columns checkbox
-    9) Mandatory selected columns - user should not be able to de-select them.
-    10) unable to de-select saved columns
-    11) Unseelected columns at the beginning of the table and saved/default selected columns at the end of the table.
-2. Basic details
-    Before save:
-    1) See all main tables
-    2) Select a main table and verify loader is appearing to fetch the columns.
-    3) If a main table has float and date columns then they should be available in Spend field and Date field dropdowns in Basic Details.
-    After save:
-    1) Main table dropdown should be disabled if at least one setting exist in the backend between consolidation to publish.
-    2) 
-3. Workflow scope:
-    1) Configure a one-time job from Load to Publish with New Load Data
-    2) Configure a one-time job from Load to Publish with Historical
-    3) Configure a one-time job from Load to Publish with Historical + New load data
-    4) Using Stop After Every Stage
-        4.1) Run Consolidation with a fresh new main table added from Project setup
-        4.2) re-run Consolidation in the same job by adding a new column to same main table via Project Setup.
-        4.3) Run Consolidation for a fresh new main table then run Profile by adding a new column to same main table.
-    5) Run a job by adding a new column to an existing main table via Project Setup.
-    6) Custom columns
-        6.1) Test by adding custom columns from following screens.
-        6.2) Added columns should be visible while configuring any job or Import/export as well as project setup.
-        6.3) Run a job by adding custom columns.
-        Available screens for custom columns:
-        6.3) Consolidation - Moving to main table
-        6.4) Consolidation - Master based normalization
-        6.5) Publish - multiple screens?? - check with Vishal Shingote.
-    7) From Consolidation to Publish - if user has not selected a main table in basic details
-        then upon clicking Configure button of any step, they should see a message saying Please select a main table to configure steps.
-    8) Consolidation - Master Based Normalization - pending
-        8.1) Each Reference master should be created against a main table as its base.
-        8.2) Currently if user saves a Reference master table in a job and if that Reference master table configuration is already existing in other jobs
-            then same table configuration is copied across all jobs - Built with SSDL-8463 by Hari.
-        8.3) Question - what should happen if user is creating a Reference master table with name that already exists but it was previously created using a different main table.
-        8.4) Generate master for a Reference master table created using a new main table and check if Table is generated successfully or it fails.
-4. Job cloning
-    1) While cloning a job, the main table dropdown should be disabled.
-        That means user won't be able to change the main table for a new copy.
-5. Import/export
-    1) Run an import request for a main table
-    2) Run an export request for a main table
-6. Job export - pending
-    1) 
-7. Cube refresh - pending
-    1) 
-8. Clustering columns - pending
-    1) 
+
 
 Dangerous dependencies:
     a) SpendCubeRefreshBAO - DANGER
@@ -161,3 +105,8 @@ https://smartbygep.atlassian.net/browse/SSDL-9975
 https://smartbygep.atlassian.net/browse/SSDL-10895
 https://smartbygep.atlassian.net/browse/SSDL-6433
 https://smartbygep.atlassian.net/browse/SSDL-10535
+
+Blockers:
+1. Publish - unused active column.
+2. Schema change operation time
+3. Reference master conflict
