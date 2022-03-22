@@ -42,3 +42,11 @@ Plugins per circle:
 
 6. Normalize 
     1) 
+7. Classify 
+    1) spend-classify-configure-stage
+    2) spend-model-generation
+    3) spend-gep-knowledgebase
+    4) spend-classify-through-rules-config
+    5) spend-classify-exec-quality-checks
+    6) spend-classification-historical-clusters
+    7) spend-ai-classification-through-project
