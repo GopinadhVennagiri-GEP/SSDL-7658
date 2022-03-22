@@ -47,10 +47,10 @@
         2.2) Consolidation - Moving to main table
         2.3) Consolidation - Master based normalization
         2.4) Publish - 4 screens
-            a) Range bucket
-            b) one/time flag
-            c) old/new
-            d) one to many
+            a) Standard - Range bucket
+            b) Standard - one/time flag
+            c) Standard - old/new
+            d) Standard - one to many
     3) Running two jobs with multi main table
         3.1) User should be able to run a job with one main table
             and if that job is in paused or stopped or not started status
@@ -58,23 +58,49 @@
 4. Job cloning
     1) While cloning a job, the main table dropdown should be disabled.
         That means user won't be able to change the main table for a new copy.
-
-Pending:
-1.Consolidation - Master Based Normalization - pending
-    1.1) Each Reference master should be created against a main table as its base.
-    1.2) Currently if user saves a Reference master table in a job and if that Reference master table configuration is already existing in other jobs
-        then same table configuration is copied across all jobs - Built with SSDL-8463 by Hari.
-    1.3) Question - what should happen if user is creating a Reference master table with name that already exists but it was previously created using a different main table.
-    1.4) Generate master for a Reference master table created using a new main table and check if Table is generated successfully or it fails.
-2. Import/export - pending
+5. Import/export
     1) Run an import request for a main table
     2) Run an export request for a main table
-3. Job export - pending
-    1) 
-4. Cube refresh - pending
-    1) 
-5. Clustering columns - pending
-    1) 
-6. Data lake mapping - pending
-    1) 
-7. Show demo of using un-used column.
+6. Consolidation - Master Based Normalization
+    In MBN, when you save a task then this task becomes a Reference Master table on UI as well as ADB.
+    1) In a workflow job, configure Master Based Normalization with at least one task.
+        1.1) In the database on .NET side, there should be one entry for your task in SSDL.SPEND_SSDL_Table sql table
+            and the BaseTableId should be the ID of the Main table you selected in Basic Details section on UI.
+        1.3) A Reference Master table's name must be unique for a main table. It means you can't create a Reference Master table in two jobs with two different main tables.
+            If main table is same in two jobs then you can create the Reference Master table with same name in both jobs.
+            1.3.1) If the selected main table is Main1 and you create a task by adding some columns and filters in Master Based Normalization in one job.
+                Then a) In a new job, if you select Main1, and add a task in MBN with same name as task from previous job but this time select different columns and filters.
+                    Then when you save the task, go back to the previous job and you should see the latest columns and filters.
+                    b) In a new job, if you select Main2, and add a task in MBN with same name, then it should stop you from saving
+                saying "a Reference Master table already exists with same name and Main1 main table as its base".
+    2) Click on Generate master for a Reference master table created using a new main table and check if Table is generated successfully or it fails.
+    3) In a different job, create a task in MBN but don't click on Generate button, just run that consolidation job and this time also, Reference Master table should be generated.
+        Verify with ADB if Reference master table with that task's name is created or not.
+7. Publish - 4 screens
+    Currently: All 4 steps that are named as "Standard" behave like this on Prod.
+        User can only see un-used columns on these 4 screens.
+    After SSDL-7658:
+        User can see all the columns that are selected and saved in Project Setup.
+8. Clustering columns in Project Setup:
+    Two sections: Supplier clustering and Classification clustering.
+    Until PMG comes up with an enhancement story,
+        1) With SSDL-7658, the VNE and Classify will fail for main table except OPS_MAIN.
+        2) On UI, user should only see columns of OPS_MAIN.
+9. Cube refresh:
+    1) All data modifications or consolidation activities on a main table should reflect in the cube after publishing cube.
+10. Data lake mapping
+    1) Project Setup UI
+        1.1) User should be able to select multiple main tables in the dropdown checkboxes.
+        1.2) User should be able to map columns from multiple main tables.
+        1.3) User should be able to add filters for multiple main tables.
+        1.4) User should be able to save mappings and filters from above points and on page refresh, 
+        same mappings and filters should be visible.
+    2) Workflow job - Publish - move data to data lake:
+        2.1) pushing data for the first time: push all the data in maintable.
+        2.2) some records are updated, push those records.
+        2.3) some records are deleted, push those records.
+        2.4) pushing data, but there is no delta data.
+        2.5) table name do not matches with the table name given in basic details.
+
+Pending:
+3. Job export and Job import - pending with Vishal Khot.
