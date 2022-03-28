@@ -50,3 +50,10 @@ Plugins per circle:
     5) spend-classify-exec-quality-checks
     6) spend-classification-historical-clusters
     7) spend-ai-classification-through-project
+    8) spend-classification-through-ai
+    9) spend-ai-sample-selection
+    10) spend-classify-clustering-classification-data
+    11) spend-classify-generate-file-error
+    12) spend-classify-generate-filefor-missing-classification
+    13) spend-classify-update-fixed-data-upload-attachment
+    14) spend-cleanse-query
