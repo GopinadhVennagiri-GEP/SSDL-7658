@@ -14,17 +14,23 @@ Plugins per circle:
     12) spend-moving-main-table-edit-lib
     13) spend-moving-to-main-table-lib
     14) spend-normalization-lib
+	
 2. Project Setup
     1) spend-project-setup-add-maintable
     2) spend-project-setup-multi-maintable
     3) spend-api
     4) spend-data-table
     5) spend-ps-configuration-setup
+	6) spend-ps-classification-clustering
+	7) spend-ps-supplier-normalization-clustering
+
 3. Workflow
     1) spend-basic-details
     2) spend-landing-page
     3) spend-stage-configuration
-    4)
+	4) spend-api
+	5) spend-data-table
+	
 4. Add Custom Column 
     1) spend-add-custom-column
     2) Spend-moving-main-table-upload
@@ -41,7 +47,20 @@ Plugins per circle:
     8)spend-trendcheck-table
 
 6. Normalize 
-    1) 
+    1) spend-execute-quality-checks-configuration
+	2) spend-normalization-historical-data
+	3) spend-normalization-through-ai
+	4) spend-normalization-update-missing-parent
+	5) spend-normalize-generate-file-error
+	6) spend-normalize-update-fixed-data-config
+	7) spend-normalize-update-fixed-data
+	8) spend-supplier-clustering
+	9) spend-vne-cleansing-query
+	10) spend-vne-generate-file
+	11) spend-vne-rules-popup
+	12) spend-vne-upload-attachment
+	13) spend-vne-configure-stage
+
 7. Classify 
     1) spend-classify-configure-stage
     2) spend-model-generation

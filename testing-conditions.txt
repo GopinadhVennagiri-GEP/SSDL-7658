@@ -66,7 +66,7 @@ Dangerous dependencies:
 
 Special conditions to filter out main table columns:
 1. Spend Normalization needs GEP_NORM_SPEND_ columns
-2. Publish - one time flag displays only Nvarchar data type while creating custom columns.
+2. Publish - 4 standard screens display only Nvarchar data type while creating custom columns.
 3. Exclusion summary - ignores GEP_EXCLUDE column
 4. Classify through rules - hard code columns are:
     a) GEP_CATEGORY_CODE, GEP_AI_SOURCE_CF, GEP_CF_SOURCE, GEP_CF_SOURCE_2, GEP_RULE_ID
@@ -96,7 +96,68 @@ Special conditions to filter out main table columns:
     a) hard coded: GEP_NORM_SPEND
 15. AIfields
     a) hard coded: GEP_NORM_SUPP_NAME, GEP_VNE_SOURCE, GEP_VNE_SOURCE_2, GEP_AI_SOURCE_VNE, GEP_ULT_PARENT, GEP_UP_SOURCE, GEP_UP_SOURCE_2, GEP_AI_SOURCE_UP
-    
+
+What if someone has already configured Consolidation - moving to main table
+with PO_UNIT_PRICE_LOCAL column
+It won't break on executing project config json.
+It will break executing consolidation
+because data will come from string column and try to go into double column.
+If it's a one time job then no worries.
+If it's a recurring job then we need to ask the users to change the configuration
+wherever they are using PO_UNIT_PRICE_LOCAL column.
+Two issues:
+1. Project config json will fail because of length being present for float column.
+2. If (1) is not present then still consolidation will fail becuase of data type mismatch.
+
+Data type and length correction:
+1) int to bigint
+    1.1) GEP_CLN_CLUSTER
+    1.2) 'IMPORTEXPORTUID%' 10 columns - int to bigint
+2) PO_UNIT_PRICE_LOCAL -- string to float
+3) PO_UNIT_PRICE_LOCAL -- make length 255 to 0
+4) MODIFIED_DATE - was smallint on QC so check for other environments - datetime.
+5) from boolean to string
+    same for:
+GEP_DELTAFLAG
+GEP_DIVERSITY_8A_CERTIFICATION_INDICATOR
+GEP_DIVERSITY_AIRPORT_CONCESSION_DISADVANTAGED_BUSINESS_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_ALASKAN_NATIVE_CORPORATION_INDICATOR
+GEP_DIVERSITY_CERTIFIED_SMALL_BUSINESS_INDICATOR
+GEP_DIVERSITY_DISABLED_VETERAN_BUSINESS_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_DISABLED_OWNED_BUSINESS_INDICATOR
+GEP_DIVERSITY_DISADVANTAGED_BUSINESS_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_DISADVANTAGED_VETERAN_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_HUB_ZONE_CERTIFIED_BUSINESS_INDICATOR
+GEP_DIVERSITY_LABOR_SURPLUS_AREA_INDICATOR
+GEP_DIVERSITY_MINORITY_BUSINESS_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_MINORITY_COLLEGE_INDICATOR
+GEP_DIVERSITY_MINORITY_OWNED_INDICATOR
+GEP_DIVERSITY_OUT_OF_BUSINESS_INDICATOR
+GEP_DIVERSITY_POLITICAL_DISTRICT
+GEP_DIVERSITY_SERVICE_DISABLED_VETERAN_OWNED_INDICATOR
+GEP_DIVERSITY_SMALL_BUSINESS_INDICATOR
+GEP_DIVERSITY_SMALL_DISADVANTAGED_BUSINESS_INDICATOR
+GEP_DIVERSITY_VETERAN_BUSINESS_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_VETERAN_OWNED_INDICATOR
+GEP_DIVERSITY_VIETNAM_VETERAN_OWNED_INDICATOR
+GEP_DIVERSITY_OTHER_VETERAN_OWNED_INDICATOR
+GEP_DIVERSITY_WOMAN_OWNED_BUSINESS_ENTERPRISE_INDICATOR
+GEP_DIVERSITY_WOMAN_OWNED_INDICATOR
+GEP_DIVERSITY_AFRICAN_AMERICAN_OWNED_INDICATOR
+GEP_DIVERSITY_ASIAN_PACIFIC_AMERICAN_OWNED_INDICATOR
+GEP_DIVERSITY_HISPANIC_AMERICAN_OWNED_INDICATOR
+GEP_DIVERSITY_NATIVE_AMERICAN_OWNED_INDICATOR
+GEP_DIVERSITY_SUBCONTINENT_ASIAN_AMERICAN_OWNED_INDICATOR
+
+
+Range bucket -
+    Select field for storing Bucket Name
+old new flag
+    Select field for storing the New/Old Flag Value *
+one time flag
+    Select field for storing the One time Flag
+one many flag
+    Select field for storing the One - Many Flag
 
 Pending stories/tasks:
 https://smartbygep.atlassian.net/browse/SSDL-11141
