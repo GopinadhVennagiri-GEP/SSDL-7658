@@ -39,3 +39,16 @@ set TS.DataTypeId=CTE.correctDataType
 -- select CTE.ColumnName,TS.DataTypeId,CTE.correctDataType  
 from ssdl.SPEND_SSDL_TableSchema TS  
 join CTE on TS.ColumnName=CTE.ColumnName AND TS.TableID = @OpsMainTableId 
+
+
+--------- find non string columns with length -----
+DECLARE @OpsMainTableId INT;
+DECLARE @MainTableTypeId INT;
+SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
+SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'OPS_MAIN';
+
+-- select * from ssdl.SPEND_DCC_TABLE_DATA_TYP_MST
+
+select ColumnName,DATA_TYP_NAME,ColumnDataLength from ssdl.SPEND_SSDL_TableSchema B
+join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID 
+where TableID=@OpsMainTableId and ISNULL(ColumnDataLength,0) !=0 and  DATA_TYP_NAME not in ('Nvarchar','Varchar')
