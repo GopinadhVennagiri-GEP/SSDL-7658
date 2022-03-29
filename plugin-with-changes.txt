@@ -46,14 +46,17 @@ Plugins per circle:
     1) spend-classify-configure-stage
     2) spend-model-generation
     3) spend-gep-knowledgebase
-    4) spend-classify-through-rules-config
+    4) spend-classify-through-rules-config   - 1,
     5) spend-classify-exec-quality-checks
     6) spend-classification-historical-clusters
     7) spend-ai-classification-through-project
-    8) spend-classification-through-ai
-    9) spend-ai-sample-selection
-    10) spend-classify-clustering-classification-data
-    11) spend-classify-generate-file-error
-    12) spend-classify-generate-filefor-missing-classification
-    13) spend-classify-update-fixed-data-upload-attachment
-    14) spend-cleanse-query
+
+8. Publish
+    1) spend-publish-cleansing
+    2) spend-publish-data-dump-delivery
+    3) spend-publish-old-new
+    4) spend-publish-one-time-flag
+    5) spend-publish-one-to-many
+    6) spend-publish-range-bucket
+    7) spend-publish-predefine-steps
+    8)   
