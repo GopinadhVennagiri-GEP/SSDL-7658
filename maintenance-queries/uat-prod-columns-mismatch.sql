@@ -511,34 +511,34 @@ AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
 )
 -- select * from cte
 
--- select distinct JobId,WM.JOB_NAME,CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
+-- select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME,CTE.ColumnName, CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 -- from ssdl.WorkflowEventSetting AS A
 -- JOIN CTE ON A.SettingValue like '%'+CTE.ColumnName+'%' AND Eventid IN (2221,2222)
 -- join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID and WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 
-select distinct JobId,WM.JOB_NAME,CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
+select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME, CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 from ssdl.WorkflowEventSetting AS A
 JOIN CTE ON A.SettingValue like '%'+CTE.ColumnName+'%' AND EventId IS NOT NULL
 join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID AND WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 UNION
-select distinct JobId,WM.JOB_NAME,CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
+select distinct 'Profile to publish' AS Activity, JobId, WM.JOB_NAME, CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 from ssdl.JOB_DETAILS AS A
 JOIN CTE ON A.SettingValue like '%'+CTE.ColumnName+'%'
 join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID AND WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 UNION
-SELECT DISTINCT A.TableSchemaId
+SELECT DISTINCT 'Import Utility' AS Activity, A.ImportFileId AS JobId, '' AS JOB_NAME, CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 FROM SSDL.ImportFileColumnMappingLink A
 INNER JOIN CTE B ON A.TableSchemaId = B.TableSchemaID
 UNION
-SELECT DISTINCT AggregationTableSchemaId
+SELECT DISTINCT 'Import Utility' AS Activity, A.ImportFileId AS JobId, '' AS JOB_NAME, CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 FROM SSDL.ImportFileCriteria A
 INNER JOIN CTE B ON A.AggregationTableSchemaId = B.TableSchemaID
 UNION
-SELECT DISTINCT DestinationColumnTableSchemaId
+SELECT DISTINCT 'Import Utility' AS Activity, A.ImportFileId AS JobId, '' AS JOB_NAME, CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 FROM SSDL.ImportFileCriteriaConditions A
 INNER JOIN CTE B ON A.DestinationColumnTableSchemaId = B.TableSchemaID
 UNION
-SELECT TableSchemaID
+SELECT DISTINCT 'Export Utility' AS Activity, A.TemplateId AS JobId, A.TemplateName AS JOB_NAME, CTE.ColumnName,CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
 FROM SSDL.ExportTemplateMaster A
 INNER JOIN CTE B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
     AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
