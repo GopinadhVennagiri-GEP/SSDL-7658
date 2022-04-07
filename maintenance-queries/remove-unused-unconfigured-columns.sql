@@ -9,6 +9,28 @@ ALTER TABLE SSDL.SPEND_SSDL_MAIN_UPD DROP CONSTRAINT FK_MAIN_UPD_SOURCE_TABLE_CO
 ALTER TABLE SSDL.SPEND_SSDL_MAIN_UPD_FILTER DROP CONSTRAINT FK_MAIN_UPD_FILTER_MAIN_TABLE_COLUMN_ID
 ALTER TABLE SSDL.SPEND_SSDL_MAIN_UPD_FILTER DROP CONSTRAINT FK_MAIN_UPD_FILTER_SOURCE_TABLE_COLUMN_ID
 
+--compare inactive columns (including only created custom columns) with the same set including all custom columns
+IF 1=0
+BEGIN
+    DECLARE @OpsMainTableId INT;
+    DECLARE @MainTableTypeId INT;
+    DECLARE @InactiveColumnsList TABLE
+    (
+        TableSchemaID INT,
+        ColumnName VARCHAR(255),
+        DisplayColumnName VARCHAR(255)
+    );
+    SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
+    SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'OPS_MAIN';
+
+    SELECT TableSchemaID, ColumnName, DisplayColumnName
+    FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM[_]FIELD%' OR (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
+
+    SELECT TableSchemaID, ColumnName, DisplayColumnName
+    FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0
+END
+GO
+
 --get unused columns
 IF 1=0
 BEGIN
@@ -25,9 +47,9 @@ BEGIN
 
     INSERT INTO @InactiveColumnsList
     SELECT TableSchemaID, ColumnName, DisplayColumnName
-    FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM_FIELD%' OR (ColumnName like 'CUSTOM_FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
+    FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM[_]FIELD%' OR (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
 
-    SELECT * FROM @InactiveColumnsList
+    SELECT * FROM @InactiveColumnsList;
 
     With CTE2 AS
     (
@@ -60,18 +82,11 @@ BEGIN
         FROM SSDL.ExportTemplateMaster A
         INNER JOIN @InactiveColumnsList B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
             AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
-        -- SELECT DISTINCT
-        -- -- c.TableSchemaID
-        -- -- ,
-        -- c.ColumnName
-        -- FROM SSDL.JOB_DETAILS a
-        -- INNER JOIN @InactiveColumnsList c ON a.SettingValue IS NOT NULL AND a.SettingValue like '%' + c.ColumnName + '%'
-        --     AND SettingName IN ('RangeBucket','NewOldFlag','OnetimeFlag','OneToMany')
     )
     -- SELECT * FROM CTE2 B
     -- UPDATE A
     -- SET A.IsUsedInProject = 1
-    SELECT A.ColumnName
+    SELECT A.TableSchemaId, A.ColumnName
     FROM SSDL.SPEND_SSDL_TableSchema A
     INNER JOIN CTE2 B ON A.TableSchemaId = B.TableSchemaId
 END
@@ -93,9 +108,9 @@ BEGIN
 
     INSERT INTO @InactiveColumnsList
     SELECT TableSchemaID, ColumnName, DisplayColumnName
-    FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM_FIELD%' OR (ColumnName like 'CUSTOM_FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
+    FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM[_]FIELD%' OR (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
 
-    SELECT * FROM @InactiveColumnsList
+    SELECT * FROM @InactiveColumnsList;
 
     With CTE2 AS
     (
@@ -128,41 +143,7 @@ BEGIN
         FROM SSDL.ExportTemplateMaster A
         INNER JOIN @InactiveColumnsList B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
             AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
-        -- SELECT DISTINCT
-        -- -- c.TableSchemaID
-        -- -- ,
-        -- c.ColumnName
-        -- FROM SSDL.JOB_DETAILS a
-        -- INNER JOIN @InactiveColumnsList c ON a.SettingValue IS NOT NULL AND a.SettingValue like '%' + c.ColumnName + '%'
-        --     AND SettingName IN ('RangeBucket','NewOldFlag','OnetimeFlag','OneToMany')
     )
-    -- INSERT INTO @InactiveColumnsList
-    -- SELECT A.TableSchemaID
-    -- FROM CTE2 A
-    -- LEFT JOIN @InactiveColumnsList B ON A.TableSchemaID = B.TableSchemaID
-    -- WHERE B.TableSchemaID IS NULL
-    
-    -- DECLARE @ExportRowIterator BIGINT = 1;
-    -- DECLARE @TotalExportRows BIGINT = 0;
-
-    -- SELECT A.TemplateJSON, ROW_NUMBER() OVER(ORDER BY Id) AS RowNumber
-    -- INTO #OpsMainExportJSON
-    -- FROM SSDL.ExportTemplateMaster A
-    -- WHERE JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
-
-    -- SELECT @TotalExportRows = COUNT(1) FROM #OpsMainExportJSON
-
-    -- WHILE @ExportRowIterator <= @TotalExportRows
-    -- BEGIN
-    --     DECLARE @IteratorTemplateJSON NVARCHAR(MAX);
-    --     SELECT @IteratorTemplateJSON = TemplateJSON FROM #OpsMainExportJSON WHERE RowNumber = @ExportRowIterator;
-
-    --     SELECT *
-    --     FROM OPENJSON(@IteratorTemplateJSON)
-
-    --     SET @ExportRowIterator = @ExportRowIterator + 1;
-    -- END
-
     UPDATE A
     SET A.IsUsedInProject = 1
     -- SELECT B.ColumnName
@@ -188,9 +169,11 @@ BEGIN
     SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
     SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'OPS_MAIN';
 
-    SELECT ColumnName, DisplayColumnName FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM_FIELD%' OR (ColumnName like 'CUSTOM_FIELD%' AND DisplayColumnName not like 'Custom Field (%'));
+    SELECT ColumnName, DisplayColumnName FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0
 
-    DELETE FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM_FIELD%' OR (ColumnName like 'CUSTOM_FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
+    DELETE FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0
+
+    SELECT ColumnName, DisplayColumnName FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0
 END
 GO
 
