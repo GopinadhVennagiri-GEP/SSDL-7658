@@ -508,13 +508,92 @@ join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
 where A.DataType != N.DATA_TYP_NAME and B.TABLEId=@OpsMainTableId
 -- AND (N.DATA_TYP_NAME = 'int' AND A.DataType = 'bigint')
 AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
+AND (
+  (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'varchar' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'Nvarchar' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'float' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'Bigint' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'bit' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'smallint' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'smallint' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'smallint' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'smallint' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'smallint' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'smallint' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'Currency' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'int' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'int' AND A.DataType = 'date')
+  OR (N.DATA_TYP_NAME = 'int' AND A.DataType = 'datetime')
+  OR (N.DATA_TYP_NAME = 'int' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'int' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'int' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'date' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'date' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'date' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'date' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'date' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'date' AND A.DataType = 'smallint')
+
+  OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'float')
+  OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'int')
+  OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'bigint')
+  OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'bit')
+  OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'Currency')
+  OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'smallint')
+)
 )
 -- select * from cte
 
--- select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME,CTE.ColumnName, CTE.IncorrectDataType as ExistingDataType,CTE.correctDataType
--- from ssdl.WorkflowEventSetting AS A
--- JOIN CTE ON A.SettingValue like '%'+CTE.ColumnName+'%' AND Eventid IN (2221,2222)
--- join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID and WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
+select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME, A.SettingName AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType, B.correctDataType
+from ssdl.WorkflowEventSetting AS A
+JOIN CTE B ON A.SettingValue like '%'+B.ColumnName+'%' AND Eventid IN (2221,2222)
+join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID and WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 
 select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME, A.SettingName AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType, B.correctDataType
 from ssdl.WorkflowEventSetting AS A
