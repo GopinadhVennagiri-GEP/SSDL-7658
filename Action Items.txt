@@ -68,50 +68,42 @@ if(tableId is not null)
 		d. Sp for Save.
 
 Maintenance activities:
-1. Add following comment:
-	For following columns, there is a spelling mistake in Display names in the excel file.
-	Actual Column name  - Display name in excel file - Display name in our database
-	EXCH_MONTH - GEP Currecy Exchange Month - GEP Currency Exchange Month
-	EXCH_YEAR - GEP Currecy Exchange Year - GEP Currency Exchange Year
-	EXCH_RATE - GEP Currecy Exchange Rate - GEP Currency Exchange Rate
-	Can you check and reply with updated file if required ?
-2. Remove foreign keys from some tables before deleting un-used columns.
+1. Remove foreign keys from some tables before deleting un-used columns.
 	Dev - done.
 	QC - done.
 	UAT - pending.
 	Prod - pending.
-3. Mark inactive columns as active and then remove rest of the inactive columns.
+2. Mark inactive columns as active and then remove rest of the inactive columns.
 	Dev - done.
 	QC - done.
 	UAT - pending.
 	Prod - pending.
-4. Correct data type.
+3. Correct data type.
 	Dev - done.
 	QC - done.
 	UAT - pending.
 	Prod - pending.
-5. Correct data length for template main table columns - excluding custom columns.
+4. Correct data length for template main table columns - excluding custom columns.
 	Dev - done.
 	QC - done.
 	UAT - pending.
 	Prod - pending.
-6. Correct data length for custom main table columns - Check with Vishal Shingote/Abhijit.
+5. Correct data length for custom main table columns - Check with Vishal Shingote/Abhijit.
 	Dev - pending.
 	QC - pending.
 	UAT - pending.
 	Prod - pending.
-7. Correct the static asset script for OPS_MAIN until we decide to remove the OPS_MAIN from static asset.
-8. Correct the field category as per Excel.
+6. Correct the static asset script for OPS_MAIN until we decide to remove the OPS_MAIN from static asset.
+7. Correct the field category as per Excel.
 	Dev - pending.
 	QC - pending.
 	UAT - pending.
 	Prod - pending.
-9. Correct the Display Column name
-10. Display name for these columns are wrong in Excel:
-	EXCH_MONTH, GEP Currency Exchange Month, Nvarchar, GEP Currency Exchange Month
-	EXCH_YEAR, GEP Currency Exchange Year, Nvarchar, GEP Currency Exchange Year
-	EXCH_RATE, GEP Currency Exchange Rate, Float, GEP Currency Exchange Rate
-11. We may have to send a communication to users when we correct the display name for following:
+8. Correct the Display Column name as per excel. Because Display name for these columns are wrong in Excel:
+	Mentioned in the comments.
+	Recitified in JIRA.
+	Need to get them corrected on all environments/domains.
+9. Not required anymore - We may have to send a communication to users when we correct the display name for following:
 	GEP_UP_STATUS_FLAG, GEP UP Status Flag, Nvarchar, GEP Parent Linkage Status Flag
 	GEP_CF_STATUS_FLAG, GEP CF Status Flag, Nvarchar, GEP Classification Status Flag
 	GEP_VNE_STATUS_FLAG, GEP VN Status Flag, Nvarchar, GEP Supplier Normalization Status Flag
