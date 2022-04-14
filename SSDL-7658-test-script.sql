@@ -144,12 +144,12 @@ DECLARE @NvarcharDataTypeID INT = 0
 DECLARE @DateDataTypeID INT = 0;
 DECLARE @FloatDataTypeID INT = 0;
 
-SELECT @BigintDataTypeId = DATA_TYP_ID FROM SSDL.SPEND_DCC_TABLE_DATA_TYP_MST WHERE DATA_TYP_NAME = 'Bigint';
+SELECT @BigintDataTypeId = DATA_TYP_ID FROM SSDL.SPEND_DCC_TABLE_DATA_TYP_MST WHERE DATA_TYP_NAME = 'Bigint';--18
 SELECT @DatetimeDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Datetime';
 SELECT @BitDataTypeID = DATA_TYP_ID  FROM [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST] WHERE DATA_TYP_NAME = 'Bit';
-SELECT @NvarcharDataTypeID  = DATA_TYP_ID  FROM [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST] WHERE DATA_TYP_NAME = 'Nvarchar';
-SELECT @DateDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Date';
-SELECT @FloatDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Float';
+SELECT @NvarcharDataTypeID  = DATA_TYP_ID  FROM [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST] WHERE DATA_TYP_NAME = 'Nvarchar';--407
+SELECT @DateDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Date';--13
+SELECT @FloatDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Float';--48
 
 INSERT INTO SSDL.MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataTypeID,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn,CreatedBy,CreatedDate,LastUpdatedBy,LastUpdatedDate)
 VALUES
@@ -200,9 +200,9 @@ VALUES
 	,('GEP_NORM_INVOICE_UNIT_PRICE_EUR','GEP Normalized Invoice Unit Price (EUR)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_INVOICE_QUANTITY','GEP Normalized Invoice Quanity','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Convert to Standard UOM',0,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_INVOICE_UOM','GEP Normalized Invoice UOM','GEP - Amount',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Convert to Standard UOM',0,1,GETDATE(),1,GETDATE())
-	,('EXCH_MONTH','GEP Currecy Exchange Month','GEP - Amount',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
-	,('EXCH_YEAR','GEP Currecy Exchange Year','GEP - Amount',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
-	,('EXCH_RATE','GEP Currecy Exchange Rate','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
+	,('EXCH_MONTH','GEP Currency Exchange Month','GEP - Amount',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
+	,('EXCH_YEAR','GEP Currency Exchange Year','GEP - Amount',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
+	,('EXCH_RATE','GEP Currency Exchange Rate','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_SPEND_USD','GEP Normalized Spend (USD)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_SPEND_USD_WITHOUT_TAX','GEP Normalized Spend (USD) Without Tax','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_SPEND_EUR','GEP Normalized Spend (EUR)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
@@ -219,7 +219,7 @@ VALUES
 	,('GEP_NORMALIZED_PO_UNIT_PRICE_EUR','GEP Normalized PO Unit Price (EUR)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_DATE','GEP Normalized Date','GEP - Period',@DateDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 	,('CREATED_DATE','Record Entry Date','GEP - Admin - ID',@DatetimeDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
-	,('MODIFIED_DATE','Record Modifed Date','GEP - Admin - ID',@DatetimeDataTypeID,NULL,0,0,'HideEverywhere',1,NULL,0,1,GETDATE(),1,GETDATE())
+	,('MODIFIED_DATE','Record Modified Date','GEP - Admin - ID',@DatetimeDataTypeID,NULL,0,0,'HideEverywhere',1,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_SUPP_CLUSTER','GEP Vendor Normalization Cluster ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_CLN_CLUSTER','GEP Classification Cluster ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_BU_CLUSTER','GEP BU Cluster ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
@@ -468,7 +468,7 @@ VALUES
 	,('PO_PAYMENT_TERM','PO Payment Term','ERP - PO',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_NORM_PO_PAYMENT_TERM','GEP Normalized PO Payment Term','GEP - Payment Term',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('PO_QUANTITY','PO Quantity','ERP - PO',@FloatDataTypeID,NULL,1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
-	,('PO_QUANTITY_NORMALIZED','GEP Normalized PO Quanity','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Convert to Standard UOM',0,1,GETDATE(),1,GETDATE())
+	,('PO_QUANTITY_NORMALIZED','GEP Normalized PO Quantity','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Convert to Standard UOM',0,1,GETDATE(),1,GETDATE())
 	,('PO_UOM','PO UOM','ERP - PO',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
 	,('PO_UOM_NORMALIZED','GEP Normalized PO UOM','GEP - Amount',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Convert to Standard UOM',0,1,GETDATE(),1,GETDATE())
 	,('PO_DESCRIPTION_1','PO Description','ERP - PO',@NvarcharDataTypeID,'2000',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
@@ -505,7 +505,7 @@ VALUES
 	,('PO_CATEGORY_3','PO Category 3','ERP - PO',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('PO_CATEGORY_4','PO Category 4','ERP - PO',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('ITEM_MATERIAL_NUMBER','Material Number','ERP - Item Master',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
-	,('ITEM_MATERIAL_REVISION_NUMBER','Maerial Revision Number','ERP - Item Master',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
+	,('ITEM_MATERIAL_REVISION_NUMBER','Material Revision Number','ERP - Item Master',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('ITEM_MATERIAL_DESCRIPTION','Material Description','ERP - Item Master',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
 	,('ITEM_MATERIAL_GROUP_CODE','Material Group Code','ERP - Item Master',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('ITEM_MATERIAL_GROUP_DESCRIPTION','Material Group Description','ERP - Item Master',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,1,1,GETDATE(),1,GETDATE())
@@ -545,7 +545,7 @@ VALUES
 	,('INCOTERMS_CODE','Inco Terms Code','ERP - Miscellaneous',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'Approver Hier.',0,1,GETDATE(),1,GETDATE())
 	,('INCOTERMS_DESCRIPTION','Inco Terms Description','ERP - Miscellaneous',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'If in SAP',0,1,GETDATE(),1,GETDATE())
 	,('GEP_DIVERSITY_FLAG','GEP Diversity Flag','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Y, N',0,1,GETDATE(),1,GETDATE())
-	,('GEP_DIVERSITY_TYPE','Gep Diversity Type','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Combo',0,1,GETDATE(),1,GETDATE())
+	,('GEP_DIVERSITY_TYPE','GEP Diversity Type','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Combo',0,1,GETDATE(),1,GETDATE())
 	,('GEP_DIVERSITY_8A_CERTIFICATION_INDICATOR','GEP Diversity 8a Certification Indicator','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_DIVERSITY_AIRPORT_CONCESSION_DISADVANTAGED_BUSINESS_ENTERPRISE_INDICATOR','GEP Diversity Airport Concession Disadvantaged Business Enterprise Indicator','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_DIVERSITY_ALASKAN_NATIVE_CORPORATION_INDICATOR','GEP Diversity Alaskan Native Corporation Indicator','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
@@ -575,7 +575,7 @@ VALUES
 	,('GEP_DIVERSITY_HISPANIC_AMERICAN_OWNED_INDICATOR','GEP Diversity Hispanic American Owned Indicator','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_DIVERSITY_NATIVE_AMERICAN_OWNED_INDICATOR','GEP Diversity Native American Owned Indicator','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_DIVERSITY_SUBCONTINENT_ASIAN_AMERICAN_OWNED_INDICATOR','GEP Diversity Subcontinent Asian American Owned Indicator','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
-	,('GEP_OTHER_DIVERSITY','Gep Diversity Other','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
+	,('GEP_OTHER_DIVERSITY','GEP Diversity Other','GEP - Diversity',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('SOURCEFILENAME','Source File Name','GEP - Admin - ID',@NvarcharDataTypeID,'1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Includes FTP Folder Path, New Tool logic will maintian folder names maintained within Pickup folder',0,1,GETDATE(),1,GETDATE())
 	,('GEP_YEAR','GEP Calendar Year','GEP - Period',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GEP_QTR','GEP Calendar Quarter','GEP - Period',@NvarcharDataTypeID,'20',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
@@ -625,16 +625,16 @@ VALUES
 	,('GR_UNIT_PRICE','Goods Receipt Unit Price','ERP - Goods Receipt',@FloatDataTypeID,NULL,1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GR_QUANTITY','Goods Receipt Quantity','ERP - Goods Receipt',@FloatDataTypeID,NULL,1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 	,('GR_UOM','Goods Receipt UoM','ERP - Goods Receipt',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID1','Import Export UID 1','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID2','Import Export UID 2','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID3','Import Export UID 3','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID4','Import Export UID 4','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID5','Import Export UID 5','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID6','Import Export UID 6','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID7','Import Export UID 7','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID8','Import Export UID 8','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID9','Import Export UID 9','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
-	,('IMPORTEXPORTUID10','Import Export UID 10','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID1','Import Export Unique ID 1','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID2','Import Export Unique ID 2','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID3','Import Export Unique ID 3','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID4','Import Export Unique ID 4','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID5','Import Export Unique ID 5','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID6','Import Export Unique ID 6','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID7','Import Export Unique ID 7','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID8','Import Export Unique ID 8','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID9','Import Export Unique ID 9','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
+	,('IMPORTEXPORTUID10','Import Export Unique ID 10','GEP - System',@BigintDataTypeId,NULL,0,0,'HideEverywhere',1,'System Internal field',0,1,GETDATE(),1,GETDATE())
 	,('GEP_AI_SOURCE_VNE','GEP Supplier Normalization Source','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'GEP_SUPP_SPEND_BUCKET',0,1,GETDATE(),1,GETDATE())
 	,('GEP_AI_SOURCE_UP','GEP Parent Linkage Source','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'RULE - CLIENT, RULE - GEP, AI- DATA LAKE, AI - PROJECT',0,1,GETDATE(),1,GETDATE())
 	,('GEP_AI_DL_CATEGORY_L5','GEP AI DL Category L5','GEP - Admin - Data Lake',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
