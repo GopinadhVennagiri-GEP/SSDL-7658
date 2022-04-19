@@ -104,3 +104,15 @@
 
 Pending:
 3. Job export and Job import - pending with Vishal Khot.
+
+
+Test case completion review:
+1. Load data in a source table
+2. Move data from source table to a new main table - Consolidation.
+3. Delete data from Load Data screen - first with new main table then the source table.
+4. Create a Reference master using Master Based Normalization
+5. Update or purge data in Reference master table that you created from Master Based Normalization
+6. Add custom columns and same should be available during configuration across all screens of Workflow.
+7. Configure and run a job with one main table with stop after every stage
+8. When job is stopped at last step, then run another job with different main table. It should be in progress.
+9. When second job completes, then run first job again.

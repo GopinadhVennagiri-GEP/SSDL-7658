@@ -73,7 +73,7 @@ Maintenance activities:
 	QC - done.
 	UAT - pending.
 	Prod - pending.
-2. Mark inactive columns as active and then remove rest of the inactive columns.
+2. Mark inactive columns as active (if configured) and then remove rest of the inactive columns.
 	Dev - done.
 	QC - done.
 	UAT - pending.
@@ -107,3 +107,30 @@ Maintenance activities:
 	GEP_UP_STATUS_FLAG, GEP UP Status Flag, Nvarchar, GEP Parent Linkage Status Flag
 	GEP_CF_STATUS_FLAG, GEP CF Status Flag, Nvarchar, GEP Classification Status Flag
 	GEP_VNE_STATUS_FLAG, GEP VN Status Flag, Nvarchar, GEP Supplier Normalization Status Flag
+
+Additional validations:
+1. Spend and date field are currently not mandatory and we have to make them mandatory on UI.
+2. Moving to main - source to main data type matching is pending.
+3. Disabling main table drop down instantly after saving.
+4. Check with PMG for helper text for custom columns.
+5. Plan for showing columns that are configured in job/circle/step.
+
+1. int to bigint
+2. date to datetime
+3. any data type to nvarchar
+4. nvarchar to any thing else - blocked
+
+Remove 11 columns from template master, except IMPORTEXPORTUID series.
+
+One script to check source to main with data type discrepancy.
+UI change - moving to main table - compatible data type mapping should be allowed.
+
+I had not taken Clustering columns and Data lake mapping columns in consideration for making them active IF they are inactive and used.
+
+Release notes:
+1. Removal of un-used inactive columns from UI as well as ADB.
+2. Removal of 10 internal columns only from UI, will be used internally by ADB.
+3. Data type matching validations flexibility.
+4. 21 columns not supposed to be used.
+5. Out of 21 columns, 11 columns will be removed from UI (meta data of domain onboarding process).
+6. 

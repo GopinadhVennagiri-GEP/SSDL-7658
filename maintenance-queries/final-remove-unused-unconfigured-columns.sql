@@ -34,19 +34,23 @@ GO
 --get unused columns
 IF 1=0
 BEGIN
+    DECLARE @MainTableName VARCHAR(255);
     DECLARE @OpsMainTableId INT;
     DECLARE @MainTableTypeId INT;
+    
     DECLARE @InactiveColumnsList TABLE
     (
         TableSchemaID INT,
         ColumnName VARCHAR(255),
-        DisplayColumnName VARCHAR(255)
+        DisplayColumnName VARCHAR(255),
+        IsUsedInProject BIT
     );
+    SET @MainTableName = 'OPS_MAIN'
     SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
-    SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'OPS_MAIN';
+    SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = @MainTableName;
 
     INSERT INTO @InactiveColumnsList
-    SELECT TableSchemaID, ColumnName, DisplayColumnName
+    SELECT TableSchemaID, ColumnName, DisplayColumnName, IsUsedInProject
     FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0 AND (ColumnName not like 'CUSTOM[_]FIELD%' OR (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName not like 'Custom Field (%'))
 
     SELECT * FROM @InactiveColumnsList;
@@ -60,7 +64,6 @@ BEGIN
         FROM SSDL.WorkflowEventSetting a
         INNER JOIN @InactiveColumnsList c ON a.SettingValue IS NOT NULL AND a.SettingValue like '%' + c.ColumnName + '%' AND a.EventId IS NOT NULL
             AND a.EventId BETWEEN 2220 AND 2310
-            AND (a.EventId NOT IN (2252) OR (a.EventId = 2252 AND JSON_VALUE(a.SettingValue, '$.eventUIDetail[0].currencyColumnMainTable') = c.ColumnName))
         UNION
         SELECT DISTINCT A.TableSchemaId
         FROM SSDL.ImportFileColumnMappingLink A
@@ -78,10 +81,17 @@ BEGIN
         -- INNER JOIN SSDL.ImportFileCriteria B ON A.ImportFileCriteriaId = B.Id
         -- INNER JOIN SSDL.ImportFiles C ON B.ImportFileId = C.Id AND C.DestinationTableId = @OpsMainTableId
         UNION
-        SELECT TableSchemaID
+        SELECT DISTINCT TableSchemaID
         FROM SSDL.ExportTemplateMaster A
-        INNER JOIN @InactiveColumnsList B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
+        INNER JOIN @InactiveColumnsList B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = @MainTableName
             AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
+        UNION
+        select DISTINCT B.TableSchemaID
+        FROM OPENJSON((select JSON_QUERY(SettingValue, '$.mainTableDetails')
+        from SSDL.JOB_DETAILS A
+        where SettingName = 'DataLakeMapping' and JobId = -1))
+        INNER JOIN @InactiveColumnsList B ON JSON_VALUE(value, '$.mainTableName') = @MainTableName
+            AND JSON_QUERY(value, '$.mainTableFields') LIKE '%' + B.ColumnName +'%'
     )
     -- SELECT * FROM CTE2 B
     -- UPDATE A
@@ -121,7 +131,6 @@ BEGIN
         FROM SSDL.WorkflowEventSetting a
         INNER JOIN @InactiveColumnsList c ON a.SettingValue IS NOT NULL AND a.SettingValue like '%' + c.ColumnName + '%' AND a.EventId IS NOT NULL
             AND a.EventId BETWEEN 2220 AND 2310
-            AND (a.EventId NOT IN (2252) OR (a.EventId = 2252 AND JSON_VALUE(a.SettingValue, '$.eventUIDetail[0].currencyColumnMainTable') = c.ColumnName))
         UNION
         SELECT DISTINCT A.TableSchemaId
         FROM SSDL.ImportFileColumnMappingLink A
@@ -143,6 +152,13 @@ BEGIN
         FROM SSDL.ExportTemplateMaster A
         INNER JOIN @InactiveColumnsList B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
             AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
+        UNION
+        select DISTINCT B.TableSchemaID
+        FROM OPENJSON((select JSON_QUERY(SettingValue, '$.mainTableDetails')
+        from SSDL.JOB_DETAILS A
+        where SettingName = 'DataLakeMapping' and JobId = -1))
+        INNER JOIN @InactiveColumnsList B ON JSON_VALUE(value, '$.mainTableName') = @MainTableName
+            AND JSON_QUERY(value, '$.mainTableFields') LIKE '%' + B.ColumnName +'%'
     )
     UPDATE A
     SET A.IsUsedInProject = 1
