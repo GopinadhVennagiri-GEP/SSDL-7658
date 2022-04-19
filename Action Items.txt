@@ -134,3 +134,27 @@ Release notes:
 4. 21 columns not supposed to be used.
 5. Out of 21 columns, 11 columns will be removed from UI (meta data of domain onboarding process).
 6. 
+
+Demo:
+1. Navigate to Project Setup
+2. Open Add new main table screen
+3. Filter
+4. Sort
+5. Show Basic columns
+6. Select columns and save main table
+7. Go to Creating a new job
+8. Select a main table.
+9. Talk about loader that appears temporarily
+10. Talk about which activities will create a main table.
+11. Export Utility won't create a main table.
+12. Show adding a custom column.
+13. Show custom column suggestion table
+14. Talk about the un-used columns of Publish - 4 Standard steps.
+
+Points about activities for users:
+1. 21 internal system columns
+2. OPS_MAIN will not be created by default for new domains after this story.
+3. Un-used un-configured columns will be removed from both UI and ADB.
+4. All int data type columns of all main table will be converted to bigint data type.
+5. Moving to main step in Consolidation will have flexible validation
+for int to bigint mapping.

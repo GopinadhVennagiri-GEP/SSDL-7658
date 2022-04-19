@@ -49,11 +49,11 @@ INNER JOIN @ConfiguredJobs D ON A.JobId = D.JobId
 -- FROM SSDL.ImportFileCriteriaConditions A
 -- INNER JOIN CTE B ON A.DestinationColumnTableSchemaId = B.TableSchemaID
 -- INNER JOIN SSDL.ImportFileCriteria C ON A.ImportFileCriteriaId = C.Id
-UNION
-SELECT DISTINCT 'Export Utility' AS Activity, A.TemplateId AS JobId, A.TemplateName AS JobName, '' AS StepOrTaskName, B.DisplayColumnName, B.ColumnName, A.TemplateJSON
-FROM SSDL.ExportTemplateMaster A
-INNER JOIN CTE B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = @MainTableName
-    AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
+-- UNION
+-- SELECT DISTINCT 'Export Utility' AS Activity, A.TemplateId AS JobId, A.TemplateName AS JobName, '' AS StepOrTaskName, B.DisplayColumnName, B.ColumnName, A.TemplateJSON
+-- FROM SSDL.ExportTemplateMaster A
+-- INNER JOIN CTE B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = @MainTableName
+--     AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
 UNION
 select DISTINCT 'Clustering', NULL as JobId, '' AS JobName, (Case when ClusterType = 1 THEN 'Supplier Clustering' WHEN ClusterType = 2 THEN 'Classify Clustering' ELSE NULL END) as StepOrTaskName, B.DisplayColumnName, B.ColumnName, A.ColumnNames
 from SSDL.ClusterConfiguration A
