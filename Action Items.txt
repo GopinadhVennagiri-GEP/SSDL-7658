@@ -114,6 +114,7 @@ Additional validations:
 3. Disabling main table drop down instantly after saving.
 4. Check with PMG for helper text for custom columns.
 5. Plan for showing columns that are configured in job/circle/step.
+6. Remove datetime from custom column.
 
 1. int to bigint
 2. date to datetime
@@ -144,17 +145,38 @@ Demo:
 6. Select columns and save main table
 7. Go to Creating a new job
 8. Select a main table.
-9. Talk about loader that appears temporarily
-10. Talk about which activities will create a main table.
-11. Export Utility won't create a main table.
+9. loader that appears temporarily
+10. which activities will create a main table on ADB.
+11. Export Utility won't create a main table on ADB.
 12. Show adding a custom column.
-13. Show custom column suggestion table
-14. Talk about the un-used columns of Publish - 4 Standard steps.
+13. Show custom column suggestion table.
+14. future plan for - the un-used columns of Publish - 4 Standard steps.
 
 Points about activities for users:
 1. 21 internal system columns
-2. OPS_MAIN will not be created by default for new domains after this story.
-3. Un-used un-configured columns will be removed from both UI and ADB.
-4. All int data type columns of all main table will be converted to bigint data type.
-5. Moving to main step in Consolidation will have flexible validation
-for int to bigint mapping.
+
+2. OPS_MAIN will not be created by default for new domains on any environment/domain after this story is delivered to PROD.
+3. Un-configured inactive columns will be removed from both UI and ADB from UAT and Prod as a one-time clean up activity.
+4. All int data type columns of all main table will be converted to bigint data type on UI.
+	On ADB, the int and bigint is treated as long.
+5. Moving to main step in Consolidation will have flexible validation for int to bigint mapping.
+6. Clustering will only work for OPS_MAIN. Normalize and Classify won't work for other main tables until Clustering changes are delivered.
+7. Because of that, even for new domains, user will have to create OPS_MAIN until those stories are delivered.
+8. User should be able to run a job with one main table, if other job with other main table is in Error or Stopped at last step status or paused status.
+9. When users add a main table on UI, it will be physically created while running a workflow job that has any one circle from Consolidation to Publish.
+OR using Import Utility -> without using Unique ID option.
+10. If user adds a main table on UI, and without running workflow or Import, if they run Export Utility, it won't run
+because that table has to be physically created. The physical creation will only happen from Consolidation to Publish and Import Utility without using Unique ID option.
+
+Pending points for Release notes:
+1. Cube also won't work for other main tables until its delivery.
+@Pratik - Custom column validation changes:
+2. SSDL-10250 story changes will also be part of this UAT release.
+@Vishal Shingote - Cube
+3. User will have to contact Support team for creating a cube for a new main table.
+4. Columns which are used in existing cube configurations, user has to make sure that they are selected in Project setup.
+
+Feedback from demo:
+1. UI for custom columns suggestion table needs width adjustment. The info icon is very far.
+2. The Publish - 4 standard steps discussion should show only un-used but selected columns.
+3. If we are converting columns from int to bigint for main table columns, can we providing bigint in source table columns?

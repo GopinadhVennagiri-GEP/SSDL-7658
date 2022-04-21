@@ -17,6 +17,7 @@ SELECT @FloatDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]
 INSERT INTO SSDL.MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataTypeID,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn,CreatedBy,CreatedDate,LastUpdatedBy,LastUpdatedDate)
 VALUES
  ('GEP_DATAID','GEP DATA ID','GEP - Admin - ID',@BigintDataTypeId,NULL,0,1,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
+,('UNIQUEID','Unique ID','GEP - Admin - ID',@NvarcharDataTypeID,'1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Source Table DataID + Source File Name + Source Record Entry Date',0,1,GETDATE(),1,GETDATE())
 ,('INVOICE_DOCUMENT_TYPE','Invoice Document Type','ERP - Invoice - Document',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Doc Type',0,1,GETDATE(),1,GETDATE())
 ,('INVOICE_POSTING_KEY','Invoice Posting Key','ERP - Invoice - Document',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Pos Key',0,1,GETDATE(),1,GETDATE())
 ,('INVOICE_DOCUMENT_NUMBER','Invoice Document Number','ERP - Invoice - Document',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'ERP Invoice Number',0,1,GETDATE(),1,GETDATE())
@@ -81,6 +82,7 @@ VALUES
 ,('GEP_NORMALIZED_PO_UNIT_PRICE_EUR','GEP Normalized PO Unit Price (EUR)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_NORM_DATE','GEP Normalized Date','GEP - Period',@DateDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('CREATED_DATE','Record Entry Date','GEP - Admin - ID',@DatetimeDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
+,('MODIFIED_DATE','Record Modified Date','GEP - Admin - ID',@DatetimeDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_SUPP_CLUSTER','GEP Vendor Normalization Cluster ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_CLN_CLUSTER','GEP Classification Cluster ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_BU_CLUSTER','GEP BU Cluster ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
@@ -125,11 +127,14 @@ VALUES
 ,('GEP_CF_SOURCE','GEP Classification Method L1','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Rules, AI, Manual',0,1,GETDATE(),1,GETDATE())
 ,('GEP_CF_SOURCE_2','GEP Classification Method L2','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'RULE - NEW, RULE - OLD, AI- HIGH , AI - MEDIUM, AI - LOW',0,1,GETDATE(),1,GETDATE())
 ,('GEP_CF_HISTORICAL_FLAG','GEP Classification Historical Flag','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'HISTORICAL, NOT HISTORICAL',0,1,GETDATE(),1,GETDATE())
+,('GEP_JOB_ID','GEP Job ID','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,'ID of the Job',0,1,GETDATE(),1,GETDATE())
+,('GEP_JOB_NAME','GEP Job Name','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Name of the Job in the UI',0,1,GETDATE(),1,GETDATE())
 ,('GEP_COMMENTS','GEP Comments','GEP - Miscellaneous',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_DUPLICATE_KEY_FLAG','GEP Duplicate (Key) Flag','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_DUPLICATE_KEY_ID','GEP Duplicate (key) ID','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_DUPLICATE_ALL_FLAG','GEP Duplicate (All) Flag','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_DUPLICATE_ALL_ID','GEP Duplicate (All) ID','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
+,('GEP_RULE_ID','GEP Rule ID (Classification)','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_RULE_ID_VNE','GEP Rule ID (Vendor Normalization)','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_RULE_ID_OTHER','GEP Rule ID (Other)','GEP - Admin - Maintenance',@BigintDataTypeId,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('RULE_PROVIDER','GEP Rule Provider (Classification)','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
@@ -500,4 +505,3 @@ VALUES
 ,('GEP_AI_DL_CATEGORY_L7','GEP AI DL Category L7','GEP - Admin - Data Lake',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_NORM_SPEND_AED','GEP Normalized Spend (AED)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_NORM_SPEND_INR','GEP Normalized Spend (INR)','GEP - Amount',@FloatDataTypeID,NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE());
-GO
