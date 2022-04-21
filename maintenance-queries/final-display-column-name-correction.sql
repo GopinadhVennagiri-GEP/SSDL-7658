@@ -15,6 +15,7 @@ DECLARE @MainTableColumnsMaster AS TABLE
 
 INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataTypeID,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn) VALUES
  ('GEP_DATAID','GEP DATA ID','GEP - Admin - ID','bigint',NULL,0,1,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
+,('UNIQUEID','Unique ID','GEP - Admin - ID','nvarchar','1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Source Table DataID + Source File Name + Source Record Entry Date',0)
 ,('INVOICE_DOCUMENT_TYPE','Invoice Document Type','ERP - Invoice - Document','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Doc Type',0)
 ,('INVOICE_POSTING_KEY','Invoice Posting Key','ERP - Invoice - Document','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Pos Key',0)
 ,('INVOICE_DOCUMENT_NUMBER','Invoice Document Number','ERP - Invoice - Document','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'ERP Invoice Number',0)
@@ -79,6 +80,7 @@ INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,D
 ,('GEP_NORMALIZED_PO_UNIT_PRICE_EUR','GEP Normalized PO Unit Price (EUR)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('GEP_NORM_DATE','GEP Normalized Date','GEP - Period','date',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('CREATED_DATE','Record Entry Date','GEP - Admin - ID','datetime',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
+,('MODIFIED_DATE','Record Modified Date','GEP - Admin - ID','datetime',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_SUPP_CLUSTER','GEP Vendor Normalization Cluster ID','GEP - Admin - Maintenance','bigint',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_CLN_CLUSTER','GEP Classification Cluster ID','GEP - Admin - Maintenance','bigint',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_BU_CLUSTER','GEP BU Cluster ID','GEP - Admin - Maintenance','bigint',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
@@ -123,11 +125,14 @@ INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,D
 ,('GEP_CF_SOURCE','GEP Classification Method L1','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Rules, AI, Manual',0)
 ,('GEP_CF_SOURCE_2','GEP Classification Method L2','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'RULE - NEW, RULE - OLD, AI- HIGH , AI - MEDIUM, AI - LOW',0)
 ,('GEP_CF_HISTORICAL_FLAG','GEP Classification Historical Flag','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'HISTORICAL, NOT HISTORICAL',0)
+,('GEP_JOB_ID','GEP Job ID','GEP - Admin - Maintenance','bigint',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,'ID of the Job',0)
+,('GEP_JOB_NAME','GEP Job Name','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Name of the Job in the UI',0)
 ,('GEP_COMMENTS','GEP Comments','GEP - Miscellaneous','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_DUPLICATE_KEY_FLAG','GEP Duplicate (Key) Flag','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_DUPLICATE_KEY_ID','GEP Duplicate (key) ID','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_DUPLICATE_ALL_FLAG','GEP Duplicate (All) Flag','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_DUPLICATE_ALL_ID','GEP Duplicate (All) ID','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
+,('GEP_RULE_ID','GEP Rule ID (Classification)','GEP - Admin - Maintenance','bigint',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_RULE_ID_VNE','GEP Rule ID (Vendor Normalization)','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('GEP_RULE_ID_OTHER','GEP Rule ID (Other)','GEP - Admin - Maintenance','bigint',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('RULE_PROVIDER','GEP Rule Provider (Classification)','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
@@ -498,7 +503,6 @@ INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,D
 ,('GEP_AI_DL_CATEGORY_L7','GEP AI DL Category L7','GEP - Admin - Data Lake','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_NORM_SPEND_AED','GEP Normalized Spend (AED)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('GEP_NORM_SPEND_INR','GEP Normalized Spend (INR)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0);
-
 
 DECLARE @MainTableTypeId INT;
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
