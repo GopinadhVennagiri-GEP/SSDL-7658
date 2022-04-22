@@ -12,6 +12,9 @@ SET @MainTableName = 'OPS_MAIN'
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = @MainTableName;
 
+DECLARE @ErrorMessage NVARCHAR(MAX)
+DECLARE @ErrorSeverity NVARCHAR(20)
+DECLARE @ErrorState NVARCHAR(20)
 
 DECLARE @MainTableColumnsMaster AS TABLE
 (
@@ -519,10 +522,6 @@ INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,D
 ,('GEP_NORM_SPEND_AED','GEP Normalized Spend (AED)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('GEP_NORM_SPEND_INR','GEP Normalized Spend (INR)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0);
 
-DECLARE @ErrorMessage NVARCHAR(MAX)
-DECLARE @ErrorSeverity NVARCHAR(20)
-DECLARE @ErrorState NVARCHAR(20)
-
 ---1. Add missing mandatory columns to OPS_MAIN
 IF @DatabaseName LIKE @DatabaseNamePattern AND ISNULL(@OpsMainTableId, 0) <> 0
 BEGIN
@@ -549,7 +548,7 @@ BEGIN
     PRINT 'Complete - 1';
 END
 
----2. Make mandatory columns Active in OPS_MAIN
+---2. Make mandatory columns Active in OPS_MAIN if inactive
 IF @DatabaseName LIKE @DatabaseNamePattern AND ISNULL(@OpsMainTableId, 0) <> 0
 BEGIN
     BEGIN TRY
