@@ -13,7 +13,8 @@ DECLARE @MainTableColumnsMaster AS TABLE
   ,IsBasicColumn BIT
 );
 
-INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataTypeID,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn) VALUES
+INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataTypeID,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn)
+VALUES
  ('GEP_DATAID','GEP DATA ID','GEP - Admin - ID','bigint',NULL,0,1,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('UNIQUEID','Unique ID','GEP - Admin - ID','nvarchar','1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Source Table DataID + Source File Name + Source Record Entry Date',0)
 ,('INVOICE_DOCUMENT_TYPE','Invoice Document Type','ERP - Invoice - Document','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Doc Type',0)
@@ -503,8 +504,6 @@ INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,D
 ,('GEP_AI_DL_CATEGORY_L7','GEP AI DL Category L7','GEP - Admin - Data Lake','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('GEP_NORM_SPEND_AED','GEP Normalized Spend (AED)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('GEP_NORM_SPEND_INR','GEP Normalized Spend (INR)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0);
-
-
 
 DECLARE @MainTableTypeId INT;
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101

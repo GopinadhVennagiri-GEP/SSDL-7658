@@ -180,3 +180,14 @@ Feedback from demo:
 1. UI for custom columns suggestion table needs width adjustment. The info icon is very far.
 2. The Publish - 4 standard steps discussion should show only un-used but selected columns.
 3. If we are converting columns from int to bigint for main table columns, can we providing bigint in source table columns?
+
+Maintenance acitivites plan in this sequence:
+1. Remove all inactive unconfigured uncreated custom columns.
+- Script added to final.
+2. Identify and mark used but inactive columns as active.
+- Script added to final.
+3. Remove all remaining inactive columns.
+4. Correct data type.
+5. Correct data length.
+6. Correct display name.
+7. Check if any custom columns exist that's not created but is showing active. and then discuss for deletion.
