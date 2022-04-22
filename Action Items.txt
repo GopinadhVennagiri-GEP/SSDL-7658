@@ -182,21 +182,23 @@ Feedback from demo:
 3. If we are converting columns from int to bigint for main table columns, can we providing bigint in source table columns?
 
 Maintenance acitivites plan in this sequence:
-1. Remove all inactive unconfigured uncreated custom columns.
+1. Add missing mandatory columns to OPS_MAIN
+2. Make mandatory columns Active in OPS_MAIN
+3. Remove all inactive unconfigured uncreated custom columns.
 - Script added to final.
-2. Identify and mark the "used but inactive" columns as active.
+4. Identify and mark the "used but inactive" columns as active.
 - Script added to final.
-3. Remove all remaining inactive columns and also remove active but uncreated custom columns.
+5. Remove all remaining inactive columns and also remove active but uncreated custom columns.
 - Script added to final.
-4. Correct data type.
+6. Correct data type.
 - Script added to final.
-5. Correct data length.
+7. Correct data length.
 - Script added to final.
-6. Correct display name.
+8. Correct display name.
 - Script added to final.
-7. UAT - Remove all Unused Uncreated but Active custom columns.
+9. UAT - Remove all Unused Uncreated but Active custom columns.
 - SCRIPT NOT YET ADDED.
-8. Check if any column exists in OPS_MAIN but not in Excel file.
+10. Check if any column exists in OPS_MAIN but not in Excel file.
 
 UAT Release plan:
 1. Normal DB deployment to UAT - Foreign keys will be removed.
