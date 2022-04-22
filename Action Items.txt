@@ -184,7 +184,7 @@ Feedback from demo:
 Maintenance acitivites plan in this sequence:
 1. Remove all inactive unconfigured uncreated custom columns.
 - Script added to final.
-2. Identify and mark used but inactive columns as active.
+2. Identify and mark the "used but inactive" columns as active.
 - Script added to final.
 3. Remove all remaining inactive columns.
 - Script added to final.
@@ -193,5 +193,17 @@ Maintenance acitivites plan in this sequence:
 5. Correct data length.
 - Script added to final.
 6. Correct display name.
-7. Check if any custom columns exist that's not created but is showing active. and then discuss for deletion.
+- Script added to final.
+7. UAT - Remove all Unused Uncreated but Active columns.
+- SCRIPT NOT YET ADDED.
 8. Check if any column exists in OPS_MAIN but not in Excel file.
+
+UAT Release plan:
+1. Normal DB deployment to UAT - Foreign keys will be removed.
+2. I will checkin the maintenance script via NewMasterSCript and re-run QC pipeline and deploy on QC and UAT.
+3. Remove after deployment and verification.
+
+PRod release plan
+1. Normal DB deployment to UAT - Foreign keys will be removed.
+2. Checkin the maintenance script to HOTFIX and deploy the db.
+4. Remove after deployment and verification.

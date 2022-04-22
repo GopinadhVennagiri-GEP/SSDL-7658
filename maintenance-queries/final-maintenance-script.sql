@@ -7,7 +7,7 @@ SET @MainTableName = 'OPS_MAIN'
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = @MainTableName;
 
-SET @DatabaseNamePattern = 'UAT[_]%'
+SET @DatabaseNamePattern = 'UAT[_]%[_]SSDL'
 SET @DatabaseName = DB_NAME();
 
 DECLARE @MainTableColumnsMaster AS TABLE
@@ -538,12 +538,12 @@ BEGIN
         @ErrorState = ERROR_STATE();  
 
         -- return the error inside the CATCH block  
-        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState); 
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
         RETURN;
     END CATCH
 END
 
----2. Identify and mark used but inactive columns as active.
+---2. Identify and mark "used but inactive" columns as active.
 IF @DatabaseName LIKE @DatabaseNamePattern AND ISNULL(@OpsMainTableId, 0) <> 0
 BEGIN
     BEGIN TRY
