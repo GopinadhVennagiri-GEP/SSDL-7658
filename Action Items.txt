@@ -186,7 +186,7 @@ Maintenance acitivites plan in this sequence:
 - Script added to final.
 2. Identify and mark the "used but inactive" columns as active.
 - Script added to final.
-3. Remove all remaining inactive columns.
+3. Remove all remaining inactive columns and also remove active but uncreated custom columns.
 - Script added to final.
 4. Correct data type.
 - Script added to final.
@@ -194,7 +194,7 @@ Maintenance acitivites plan in this sequence:
 - Script added to final.
 6. Correct display name.
 - Script added to final.
-7. UAT - Remove all Unused Uncreated but Active columns.
+7. UAT - Remove all Unused Uncreated but Active custom columns.
 - SCRIPT NOT YET ADDED.
 8. Check if any column exists in OPS_MAIN but not in Excel file.
 

@@ -1,14 +1,17 @@
-DECLARE @MainTableName VARCHAR(255);
 DECLARE @DatabaseNamePattern VARCHAR(500);
 DECLARE @DatabaseName VARCHAR(500);
+
+SET @DatabaseNamePattern = 'UAT[_]%[_]SSDL'
+SET @DatabaseName = DB_NAME(); --UAT_VONAGE_SSDL
+
+DECLARE @MainTableName VARCHAR(255);
 DECLARE @OpsMainTableId INT;
 DECLARE @MainTableTypeId INT;
+
 SET @MainTableName = 'OPS_MAIN'
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = @MainTableName;
 
-SET @DatabaseNamePattern = 'UAT[_]%[_]SSDL'
-SET @DatabaseName = DB_NAME();
 
 DECLARE @MainTableColumnsMaster AS TABLE
 (
@@ -25,8 +28,7 @@ DECLARE @MainTableColumnsMaster AS TABLE
   ,IsBasicColumn BIT
 );
 
-INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataType,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn)
-VALUES
+INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataType,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn) VALUES
  ('GEP_DATAID','GEP DATA ID','GEP - Admin - ID','bigint',NULL,0,1,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('UNIQUEID','Unique ID','GEP - Admin - ID','nvarchar','1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Source Table DataID + Source File Name + Source Record Entry Date',0)
 ,('INVOICE_DOCUMENT_TYPE','Invoice Document Type','ERP - Invoice - Document','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Doc Type',0)
@@ -521,18 +523,16 @@ VALUES
 IF @DatabaseName LIKE @DatabaseNamePattern AND ISNULL(@OpsMainTableId, 0) <> 0
 BEGIN
     BEGIN TRY
-        select TableSchemaID, ColumnName, DisplayColumnName, FieldCategory, IsUsedInProject
-        from SSDL.SPEND_SSDL_TableSchema
-        where TableID = @OpsMainTableId and FieldCategory = 'ERP - Custom Fields' and DisplayColumnName like 'CUSTOM FIELD (%' AND IsUsedInProject = 0
-
-        DELETE from SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and FieldCategory = 'ERP - Custom Fields' and DisplayColumnName like 'CUSTOM FIELD (%' AND IsUsedInProject = 0
+        DELETE from SSDL.SPEND_SSDL_TableSchema
+        where TableID = @OpsMainTableId and FieldCategory = 'ERP - Custom Fields'
+        and DisplayColumnName like 'CUSTOM FIELD (%' AND IsUsedInProject = 0
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(MAX)  
         DECLARE @ErrorSeverity NVARCHAR(20)  
         DECLARE @ErrorState NVARCHAR(20)  
 
-        SELECT   
+        SELECT
         @ErrorMessage = ERROR_MESSAGE(),   
         @ErrorSeverity = ERROR_SEVERITY(),   
         @ErrorState = ERROR_STATE();  
@@ -571,7 +571,8 @@ BEGIN
         FROM SSDL.SPEND_SSDL_TableSchema
         where TableID = @OpsMainTableId and IsUsedInProject = 0
             AND (ColumnName not like 'CUSTOM[_]FIELD%'
-                OR (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName not like 'Custom Field (%')
+                OR
+                (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName not like 'Custom Field (%')
             );
 
         --SELECT * FROM @InactiveColumnsList;
@@ -657,7 +658,7 @@ BEGIN
         SET A.IsUsedInProject = 1
         -- SELECT A.TableSchemaId, A.ColumnName
         FROM SSDL.SPEND_SSDL_TableSchema A
-        INNER JOIN CTE2 B ON A.TableSchemaId = B.TableSchemaIdEND
+        INNER JOIN CTE2 B ON A.TableSchemaId = B.TableSchemaId
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(MAX)  
@@ -675,11 +676,14 @@ BEGIN
     END CATCH
 END
 
----3. Remove all remaining inactive columns.
+---3. Remove all remaining inactive columns and also remove active but uncreated custom columns.
 IF @DatabaseName LIKE @DatabaseNamePattern AND ISNULL(@OpsMainTableId, 0) <> 0
 BEGIN
     BEGIN TRY
         DELETE FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0
+
+        DELETE FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 1
+            and (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName like 'Custom Field (%')
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(MAX)  
@@ -708,9 +712,7 @@ BEGIN
         JOIN @MainTableColumnsMaster A ON A.ColumnName = B.ColumnName
         join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID = N.DATA_TYP_ID
         join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST C on A.DataType = C.DATA_TYP_NAME
-        JOIN SSDL.SPEND_SSDL_Table D ON D.TableId = B.TableId AND D.TableTypeId = @MainTableTypeId
-        where A.DataType != N.DATA_TYP_NAME
-        and B.TABLEId=@OpsMainTableId
+        where A.DataType != N.DATA_TYP_NAME and B.TABLEId=@OpsMainTableId
         AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
     END TRY
     BEGIN CATCH
@@ -762,7 +764,8 @@ BEGIN
         UPDATE B
         SET B.DisplayColumnName = A.DisplayColumnName
         from ssdl.SPEND_SSDL_TableSchema B
-        JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields' AND B.TableId = @OpsMainTableId
+        JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName
+        AND B.FieldCategory <> 'ERP - Custom Fields' AND B.TableId = @OpsMainTableId
         WHERE B.DisplayColumnName <> A.DisplayColumnName
     END TRY
     BEGIN CATCH
