@@ -13,7 +13,7 @@ DECLARE @MainTableColumnsMaster AS TABLE
   ,IsBasicColumn BIT
 );
 
-INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataTypeID,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn)
+INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataType,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn)
 VALUES
  ('GEP_DATAID','GEP DATA ID','GEP - Admin - ID','bigint',NULL,0,1,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('UNIQUEID','Unique ID','GEP - Admin - ID','nvarchar','1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Source Table DataID + Source File Name + Source Record Entry Date',0)
@@ -600,7 +600,7 @@ AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
   --   OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'smallint')
   -- )
 )
-select * from cte
+-- select * from cte
 
 -- UPDATE B
 -- SET B.DataTypeID = C.DATA_TYP_ID
@@ -631,17 +631,17 @@ select * from cte
 
 select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME, A.SettingName AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType, B.correctDataType
 from ssdl.WorkflowEventSetting AS A
-JOIN CTE B ON A.SettingValue like '%'+B.ColumnName+'%' AND Eventid IN (2221,2222)
+JOIN CTE B ON A.SettingValue like '%"'+B.ColumnName+'"%' AND Eventid IN (2221,2222)
 join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID and WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 
 select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME, A.SettingName AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType, B.correctDataType
 from ssdl.WorkflowEventSetting AS A
-JOIN CTE B ON A.SettingValue like '%'+ B.ColumnName+'%' AND EventId IS NOT NULL
+JOIN CTE B ON A.SettingValue like '%"'+B.ColumnName+'"%' AND EventId IS NOT NULL
 join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID AND WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 UNION
 select distinct 'Profile to publish' AS Activity, JobId, WM.JOB_NAME, A.SettingName AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType,B.correctDataType
 from ssdl.JOB_DETAILS AS A
-JOIN CTE B ON A.SettingValue like '%'+B.ColumnName+'%'
+JOIN CTE B ON A.SettingValue like '%"'+B.ColumnName+'"%'
 join SSDL.SPEND_DL_SA_ACIVITYWORKMASTER WM on A.JobId = WM.JOB_ID AND WM.JOB_STATUS not IN('SM','C','D') and isnull(WM.IsDeleted,0) =0
 UNION
 SELECT DISTINCT 'Import Utility' AS Activity, A.ImportFileId AS JobId, '' AS JOB_NAME, '' AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType,B.correctDataType
@@ -660,4 +660,4 @@ UNION
 SELECT DISTINCT 'Export Utility' AS Activity, A.TemplateId AS JobId, A.TemplateName AS JOB_NAME, '' AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType,B.correctDataType
 FROM SSDL.ExportTemplateMaster A
 INNER JOIN CTE B ON JSON_VALUE(A.TemplateJSON, '$.tableName') = 'OPS_MAIN'
-    AND A.TemplateJSON LIKE '%' + B.ColumnName + '%'
+    AND A.TemplateJSON LIKE '%"'+B.ColumnName+'"%'
