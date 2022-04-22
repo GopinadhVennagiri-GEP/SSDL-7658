@@ -209,3 +209,10 @@ PRod release plan
 1. Normal DB deployment to UAT - Foreign keys will be removed.
 2. Checkin the maintenance script to HOTFIX and deploy the db.
 4. Remove after deployment and verification.
+
+Status details of UAT maintenance activities:
+1. I had forgotten to consider that mandatory columns should not be deleted.
+2. I had forgotten that if mandatory columns are not active, then they should be made active otherwise they get deleted by my cleanup scripts.
+3. So to fix above issue, I added two more scripts. One to insert if mandatory columns are missing in OPS_MAIN, second to make them active if they are present but inactive.
+4. Then perform the maintenance activities in sequence.
+5. I have also prepared a verification script according to which all main table columns meta data seems correct.
