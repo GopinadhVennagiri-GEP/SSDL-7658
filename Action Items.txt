@@ -187,7 +187,11 @@ Maintenance acitivites plan in this sequence:
 2. Identify and mark used but inactive columns as active.
 - Script added to final.
 3. Remove all remaining inactive columns.
+- Script added to final.
 4. Correct data type.
+- Script added to final.
 5. Correct data length.
+- Script added to final.
 6. Correct display name.
 7. Check if any custom columns exist that's not created but is showing active. and then discuss for deletion.
+8. Check if any column exists in OPS_MAIN but not in Excel file.

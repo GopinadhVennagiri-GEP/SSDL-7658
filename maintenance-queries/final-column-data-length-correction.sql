@@ -506,29 +506,32 @@ VALUES
 ,('GEP_NORM_SPEND_INR','GEP Normalized Spend (INR)','GEP - Amount','float',NULL,0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0);
 
 DECLARE @MainTableTypeId INT;
-SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
+DECLARE @MainTableName VARCHAR(255);
+DECLARE @OpsMainTableId INT;
 
-select C.TableName, B.ColumnName, B.FieldCategory, N.DATA_TYP_NAME, B.ColumnDataLength AS IncorrectDataLength, B.TableSchemaID, A.ColumnDataLength AS CorrectDataLength
+SET @MainTableName = 'OPS_MAIN'
+SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
+SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = @MainTableName;
+
+select B.ColumnName, B.FieldCategory, B.ColumnDataLength AS IncorrectDataLength, B.TableSchemaID, A.ColumnDataLength AS CorrectDataLength
+-- ,C.TableName
 from ssdl.SPEND_SSDL_TableSchema B
-JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName
-join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
-JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
+JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.TableId = @OpsMainTableId
+-- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
 WHERE B.ColumnDataLength <> A.ColumnDataLength
 
 -- UPDATE B
 -- SET B.ColumnDataLength = A.ColumnDataLength
 -- from ssdl.SPEND_SSDL_TableSchema B
--- JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName
--- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
--- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
+-- JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.TableId = @OpsMainTableId
+-- -- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
 -- WHERE B.ColumnDataLength <> A.ColumnDataLength
 
 -- DECLARE @MainTableTypeId INT;
 -- SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 
--- select C.TableName, B.ColumnName, B.FieldCategory, N.DATA_TYP_NAME, B.ColumnDataLength AS IncorrectDataLength, B.TableSchemaID, A.ColumnDataLength AS CorrectDataLength
+-- select C.TableName, B.ColumnName, B.FieldCategory, B.ColumnDataLength AS IncorrectDataLength, B.TableSchemaID, A.ColumnDataLength AS CorrectDataLength
 -- from ssdl.SPEND_SSDL_TableSchema B
 -- JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName
--- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
 -- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
 -- WHERE B.ColumnDataLength <> A.ColumnDataLength

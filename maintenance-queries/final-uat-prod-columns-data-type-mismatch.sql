@@ -512,12 +512,14 @@ SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where T
 SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'OPS_MAIN';
 
 WITH CTE AS (
-select A.ColumnName,A.DataType AS correctDataType, N.DATA_TYP_NAME AS IncorrectDataType, B.TableSchemaID, C.TableName
-from @MainTableColumnsMaster A
-join ssdl.SPEND_SSDL_TableSchema B on A.ColumnName = B.ColumnName
-join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
-JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
-where A.DataType != N.DATA_TYP_NAME --and B.TABLEId=@OpsMainTableId
+select A.ColumnName, A.DataType AS correctDataType, N.DATA_TYP_NAME AS IncorrectDataType, B.TableSchemaID, C.DATA_TYP_ID AS CorrectDataTypeID, N.DATA_TYP_ID AS IncorrectDataTypeId--, D.TableName
+from ssdl.SPEND_SSDL_TableSchema B
+join @MainTableColumnsMaster A on A.ColumnName = B.ColumnName
+join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID = N.DATA_TYP_ID
+join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST C on A.DataType = C.DATA_TYP_NAME
+-- JOIN SSDL.SPEND_SSDL_Table D ON D.TableId = B.TableId AND D.TableTypeId = @MainTableTypeId
+where A.DataType != N.DATA_TYP_NAME
+and B.TABLEId=@OpsMainTableId
 -- AND (N.DATA_TYP_NAME = 'int' AND A.DataType = 'bigint')
 AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
   -- AND (
@@ -600,34 +602,30 @@ AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
   --   OR (N.DATA_TYP_NAME = 'datetime' AND A.DataType = 'smallint')
   -- )
 )
--- select * from cte
+select * from cte
 
 -- UPDATE B
 -- SET B.DataTypeID = C.DATA_TYP_ID
--- -- SELECT A.ColumnName, A.DataType AS correctDataType,N.DATA_TYP_NAME AS IncorrectDataType, B.TableSchemaID, C.DATA_TYP_ID AS CorrectDataTypeID, N.DATA_TYP_ID AS IncorrectDataTypeId
+-- -- SELECT A.ColumnName, A.DataType AS correctDataType, N.DATA_TYP_NAME AS IncorrectDataType, B.TableSchemaID, C.DATA_TYP_ID AS CorrectDataTypeID, N.DATA_TYP_ID AS IncorrectDataTypeId
 -- FROM SSDL.SPEND_SSDL_TableSchema B
 -- JOIN @MainTableColumnsMaster A ON A.ColumnName = B.ColumnName
--- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID= N.DATA_TYP_ID AND A.ColumnName = B.ColumnName
+-- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID = N.DATA_TYP_ID
 -- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST C on A.DataType = C.DATA_TYP_NAME
 -- JOIN SSDL.SPEND_SSDL_Table D ON D.TableId = B.TableId AND D.TableTypeId = @MainTableTypeId
--- where A.DataType != N.DATA_TYP_NAME --and B.TABLEId=@OpsMainTableId
+-- where A.DataType != N.DATA_TYP_NAME
+-- and B.TABLEId=@OpsMainTableId
 -- AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
 
--- -- DECLARE @OpsMainTableId INT;
--- -- DECLARE @MainTableTypeId INT;
--- SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
--- SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = 'OPS_MAIN';
-
--- select A.ColumnName,A.DataType AS correctDataType, N.DATA_TYP_NAME AS IncorrectDataType, B.TableSchemaID, D.TableName
--- from @MainTableColumnsMaster A
--- join ssdl.SPEND_SSDL_TableSchema B on A.ColumnName = B.ColumnName
--- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
--- JOIN SSDL.SPEND_SSDL_Table D ON D.TableId = B.TableId AND D.TableTypeId = @MainTableTypeId
--- where A.DataType != N.DATA_TYP_NAME --and B.TABLEId=@OpsMainTableId
+-- select A.ColumnName, A.DataType AS correctDataType, N.DATA_TYP_NAME AS IncorrectDataType, B.TableSchemaID, C.DATA_TYP_ID AS CorrectDataTypeID, N.DATA_TYP_ID AS IncorrectDataTypeId, D.TableName
+-- from ssdl.SPEND_SSDL_TableSchema B
+-- join @MainTableColumnsMaster A on A.ColumnName = B.ColumnName
+-- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID = N.DATA_TYP_ID
+-- join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST C on A.DataType = C.DATA_TYP_NAME
+-- -- JOIN SSDL.SPEND_SSDL_Table D ON D.TableId = B.TableId AND D.TableTypeId = @MainTableTypeId
+-- where A.DataType != N.DATA_TYP_NAME
+-- and B.TABLEId=@OpsMainTableId
 -- -- AND (N.DATA_TYP_NAME = 'int' AND A.DataType = 'bigint')
 -- AND NOT(N.DATA_TYP_NAME = 'bit' AND A.DataType = 'boolean')
-
--- SELECT * FROM SSDL.SPEND_DCC_TABLE_DATA_TYP_MST
 
 select distinct 'Consolidation' AS Activity, JobId,WM.JOB_NAME, A.SettingName AS StepOrTaskName, B.ColumnName, B.IncorrectDataType as ExistingDataType, B.correctDataType
 from ssdl.WorkflowEventSetting AS A

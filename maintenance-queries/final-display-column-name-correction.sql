@@ -508,27 +508,26 @@ VALUES
 DECLARE @MainTableTypeId INT;
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 
-select C.TableName, B.ColumnName, B.DisplayColumnName AS IncorrectDisplayColumnName, N.DATA_TYP_NAME, B.TableSchemaID, A.DisplayColumnName AS CorrectDisplayColumnName
+select B.ColumnName, B.DisplayColumnName AS IncorrectDisplayColumnName, B.TableSchemaID, A.DisplayColumnName AS CorrectDisplayColumnName
+-- ,C.TableName
 from ssdl.SPEND_SSDL_TableSchema B
-JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields'
-join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
-JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
+JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields' AND B.TableId = @OpsMainTableId
+-- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
 WHERE B.DisplayColumnName <> A.DisplayColumnName
 
 UPDATE B
 SET B.DisplayColumnName = A.DisplayColumnName
 from ssdl.SPEND_SSDL_TableSchema B
-JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields'
-join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
-JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
+JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields' AND B.TableId = @OpsMainTableId
+-- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
 WHERE B.DisplayColumnName <> A.DisplayColumnName
 
 -- DECLARE @MainTableTypeId INT;
 -- SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 
-select C.TableName, B.ColumnName, B.DisplayColumnName AS IncorrectDisplayColumnName, N.DATA_TYP_NAME, B.TableSchemaID, A.DisplayColumnName AS CorrectDisplayColumnName
+select B.ColumnName, B.DisplayColumnName AS IncorrectDisplayColumnName, B.TableSchemaID, A.DisplayColumnName AS CorrectDisplayColumnName
+-- , C.TableName
 from ssdl.SPEND_SSDL_TableSchema B
-JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields'
-join ssdl.SPEND_DCC_TABLE_DATA_TYP_MST N on B.DataTypeID=N.DATA_TYP_ID
-JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
+JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.FieldCategory <> 'ERP - Custom Fields' AND B.TableId = @OpsMainTableId
+-- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
 WHERE B.DisplayColumnName <> A.DisplayColumnName
