@@ -512,12 +512,12 @@ SET @MainTableName = 'OPS_MAIN'
 SELECT @MainTableTypeId = Table_TYP_ID FROM SSDL.SPEND_DCC_TABLE_TYP_MST where Table_TYP_code = 101
 SELECT @OpsMainTableId = TableId FROM SSDL.SPEND_SSDL_TABLE WHERE TableTypeID = @MainTableTypeId AND TableName = @MainTableName;
 
-select B.ColumnName, B.FieldCategory, B.ColumnDataLength AS IncorrectDataLength, B.TableSchemaID, A.ColumnDataLength AS CorrectDataLength
+select A.ColumnName, A.ColumnDataLength AS CorrectDataLength, B.TableSchemaID, B.ColumnName, B.ColumnDataLength AS IncorrectDataLength
 -- ,C.TableName
-from ssdl.SPEND_SSDL_TableSchema B
-JOIN @MainTableColumnsMaster A on A.ColumnName = B.ColumnName AND B.TableId = @OpsMainTableId
--- JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
-WHERE B.ColumnDataLength <> A.ColumnDataLength
+from @MainTableColumnsMaster A
+LEFT JOIN ssdl.SPEND_SSDL_TableSchema B on A.ColumnName = B.ColumnName --AND B.TableId = @OpsMainTableId AND A.ColumnDataLength = B.ColumnDataLength
+LEFT JOIN SSDL.SPEND_SSDL_Table C ON C.TableId = B.TableId AND C.TableTypeId = @MainTableTypeId
+WHERE B.ColumnDataLength IS NOT NULL AND A.ColumnDataLength <> B.ColumnDataLength
 
 -- UPDATE B
 -- SET B.ColumnDataLength = A.ColumnDataLength
