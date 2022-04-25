@@ -7,10 +7,10 @@ DECLARE @NvarcharDataTypeID INT = 0
 DECLARE @DateDataTypeID INT = 0;
 DECLARE @FloatDataTypeID INT = 0;
 
-SELECT @BigintDataTypeId = DATA_TYP_ID FROM SSDL.SPEND_DCC_TABLE_DATA_TYP_MST WHERE DATA_TYP_NAME = 'Bigint';--16
-SELECT @DatetimeDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Datetime';--1
+SELECT @BigintDataTypeId = DATA_TYP_ID FROM SSDL.SPEND_DCC_TABLE_DATA_TYP_MST WHERE DATA_TYP_NAME = 'Bigint';--18
+SELECT @DatetimeDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Datetime';--2
 SELECT @BitDataTypeID = DATA_TYP_ID  FROM [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST] WHERE DATA_TYP_NAME = 'Bit';--1
-SELECT @NvarcharDataTypeID  = DATA_TYP_ID  FROM [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST] WHERE DATA_TYP_NAME = 'Nvarchar';--405
+SELECT @NvarcharDataTypeID  = DATA_TYP_ID  FROM [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST] WHERE DATA_TYP_NAME = 'Nvarchar';--407
 SELECT @DateDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Date';--13
 SELECT @FloatDataTypeID = DATA_TYP_ID from [SSDL].[SPEND_DCC_TABLE_DATA_TYP_MST]  WHERE DATA_TYP_NAME = 'Float';--48
 
@@ -218,7 +218,7 @@ VALUES
 ,('SUPPLIER_DUNS_GLOBAL_ULTIMATE_COMPANY_NAME','Supplier DUNS Global Ultimate Company','ERP - Invoice - Supplier',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('SUPPLIER_DUNS_GLOBAL_ULTIMATE_COUNTRY','Supplier DUNS Global Ultimate Country','ERP - Invoice - Supplier',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('SUPPLIER_PREFERRED_STATUS','Supplier Preferred status','ERP - Miscellaneous',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
-,('CUSTOMER_SUPPLIER_STATUS','Customer Supplier Status','ERP - Miscellaneous',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0,1,GETDATE(),1,GETDATE())
+,('CUSTOMER_SUPPLIER_STATUS','Customer Supplier Status','ERP - Miscellaneous',@NvarcharDataTypeID,'255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())
 ,('GEP_DELTAFLAG','GEP CF Delta Flag','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Flag new vendors in the latest refresh batch for QA',0,1,GETDATE(),1,GETDATE())
 ,('GEP_ENRICHFLAG','GEP VNE Enrich Flag','GEP - Admin - Maintenance',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Parent Enriched through DL, through Web, through D&B Hoovers',0,1,GETDATE(),1,GETDATE())
 ,('GEP_NEW_VENDOR_FLAG','GEP New Vendor Flag','GEP - Miscellaneous',@NvarcharDataTypeID,'255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0,1,GETDATE(),1,GETDATE())

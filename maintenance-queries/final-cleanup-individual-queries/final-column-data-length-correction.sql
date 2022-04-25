@@ -13,8 +13,7 @@ DECLARE @MainTableColumnsMaster AS TABLE
   ,IsBasicColumn BIT
 );
 
-INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataType,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn)
-VALUES
+INSERT INTO @MainTableColumnsMaster(ColumnName,DisplayColumnName,FieldCategory,DataType,ColumnDataLength,IsInputField,IsPrimaryKey,ColumnVisibilityScopeEnumCode,IsSelectionMandatory,FieldDefinition,IsBasicColumn) VALUES
  ('GEP_DATAID','GEP DATA ID','GEP - Admin - ID','bigint',NULL,0,1,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
 ,('UNIQUEID','Unique ID','GEP - Admin - ID','nvarchar','1000',0,0,'ShowOnProjectSetupWorkflowUtilities',1,'Source Table DataID + Source File Name + Source Record Entry Date',0)
 ,('INVOICE_DOCUMENT_TYPE','Invoice Document Type','ERP - Invoice - Document','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,'SAP Doc Type',0)
@@ -217,7 +216,7 @@ VALUES
 ,('SUPPLIER_DUNS_GLOBAL_ULTIMATE_COMPANY_NAME','Supplier DUNS Global Ultimate Company','ERP - Invoice - Supplier','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('SUPPLIER_DUNS_GLOBAL_ULTIMATE_COUNTRY','Supplier DUNS Global Ultimate Country','ERP - Invoice - Supplier','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('SUPPLIER_PREFERRED_STATUS','Supplier Preferred status','ERP - Miscellaneous','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
-,('CUSTOMER_SUPPLIER_STATUS','Customer Supplier Status','ERP - Miscellaneous','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',1,NULL,0)
+,('CUSTOMER_SUPPLIER_STATUS','Customer Supplier Status','ERP - Miscellaneous','nvarchar','255',1,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
 ,('GEP_DELTAFLAG','GEP CF Delta Flag','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Flag new vendors in the latest refresh batch for QA',0)
 ,('GEP_ENRICHFLAG','GEP VNE Enrich Flag','GEP - Admin - Maintenance','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,'Parent Enriched through DL, through Web, through D&B Hoovers',0)
 ,('GEP_NEW_VENDOR_FLAG','GEP New Vendor Flag','GEP - Miscellaneous','nvarchar','255',0,0,'ShowOnProjectSetupWorkflowUtilities',0,NULL,0)
