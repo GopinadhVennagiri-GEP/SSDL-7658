@@ -36,8 +36,9 @@ BEGIN
     INSERT INTO @InactiveColumnsList
     SELECT A.TableSchemaID, A.ColumnName, A.DisplayColumnName, A.IsUsedInProject
     FROM SSDL.SPEND_SSDL_TableSchema A
-    INNER JOIN SSDL.MainTableColumnsMaster B ON A.ColumnName = B.ColumnName
-    where A.TableID = @OpsMainTableId AND A.IsUsedInProject = 1 AND B.IsSelectionMandatory = 0 and A.ColumnName not like 'CUSTOM[_]FIELD%'
+    -- INNER JOIN SSDL.MainTableColumnsMaster B ON A.ColumnName = B.ColumnName
+    where A.TableID = @OpsMainTableId AND A.IsUsedInProject = 1 and A.FieldCategory NOT IN ('ERP - Custom Fields')
+        -- AND B.IsSelectionMandatory = 0
 
     -- SELECT * FROM @InactiveColumnsList
 
