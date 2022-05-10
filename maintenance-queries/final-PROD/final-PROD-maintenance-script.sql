@@ -278,13 +278,13 @@ BEGIN TRY
         PRINT 'Complete - 4';
     END
 
-    ---5. Remove all remaining inactive columns and also remove active but uncreated custom columns.
+    ---5. Remove all remaining inactive columns
     IF @DatabaseName LIKE @DatabaseNamePattern AND ISNULL(@OpsMainTableId, 0) <> 0
     BEGIN
         BEGIN TRY
+        
             DELETE FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 0
 
-            -- DELETE FROM SSDL.SPEND_SSDL_TableSchema where TableID = @OpsMainTableId and IsUsedInProject = 1 and (ColumnName like 'CUSTOM[_]FIELD%' AND DisplayColumnName like 'Custom Field (%')
         END TRY
         BEGIN CATCH
             SELECT
